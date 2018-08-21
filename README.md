@@ -71,7 +71,7 @@ Commit all of your code files, together with `lazy-data.jsonl` into git as usual
 
 And that's it! If your team mate tries to execute `my_script.py` they will be prompted for backend access credentials (if they haven't provided those already) and will seamlessly download the correct data files. 
 
-### Usage with Python classes
+### Usage in Python classes
 
 To use with a Python class, put `lazy_data` into your `__init__()` method. 
 
@@ -83,6 +83,8 @@ class MyClass:
     def __init__(self):        
         lazy_data("my_big_table.csv")
 ```
+
+This will ensure that whenever you instantiate your class, the required data dependencies will be present. You can also put the `lazy_data()` function call into a method or a function. 
 
 ### Advanced options
 
