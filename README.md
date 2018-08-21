@@ -45,6 +45,8 @@ A new file `lazy-data.jsonl` will be created. This file is a JSON-line file, mea
 
 Your secrets will be stored in `~/.lazy-data/secrets` outside of the git repository.
 
+The command will also create a post-`git push` hook that will automatically upload your data files to the storage backend when you do `git push`. 
+
 You are now ready to add lazy data dependencies to your Python project. 
 
 ### Basic usage 
@@ -69,7 +71,7 @@ When you execute `my_script.py` one of the following happens:
  
 To make sure your team has the same version of the file as you, always keep the `lazy-data.jsonl` file in git, as it defines all the external file dependencies. 
 
-Commit all of your code files, together with `lazy-data.jsonl` into git as usual. 
+Commit all of your code files, together with `lazy-data.jsonl` into git as usual. Using our git hook, when you execute `git push` this will also upload the new data files to the storage backend.  
 
 And that's it! If your team mate tries to execute `my_script.py` they will be prompted for backend access credentials (if they haven't provided those already) and will seamlessly download the correct data files. 
 
