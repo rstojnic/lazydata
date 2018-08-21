@@ -1,4 +1,4 @@
-# Lazy-data: lazy-loading for data
+# Lazy-data: lazy loading for data
 
 Manage your data dependencies using lazy loading. Only download data when needed and with all references in code. 
 
