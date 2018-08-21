@@ -62,7 +62,7 @@ lazy_data("my_big_table.csv")
 When you execute `my_script.py` one of the following happens:
  
  - If the file `my_big_table.csv` **exists** and **is not recorded** in `lazy-data.jsonl` it will be marked as a dependency of `my_script.py` and added to `lazy-data.jsonl` with its hash.
- - If the file `my_big_table.csv` **exists** and **is recorded** in `lazy-data.jsonl`, the hashes will be checked against the stored value. If the hashes are the same, nothing else happens. If the hashes are different, the hash will be updated if the hash hasn't been part of a git commit yet, otherwise a new version of the file will be recorded.   
+ - If the file `my_big_table.csv` **exists** and **is recorded** in `lazy-data.jsonl`, the hashes will be checked against the stored value. If the hashes are the same, nothing else happens. If the hashes are different, the hash will be updated if the hash hasn't been part of a git commit yet, otherwise a new version of the file will be recorded. This behaviour can be further customised (see below)   
  - If the file `my_big_table.csv` **does not exist**, lazy-data will look for it in the storage backend using the information in `lazy-data.jsonl`. It will then download it before continuing. 
  
 To make sure your team has the same version of the file as you, always keep the `lazy-data.jsonl` file in git, as it defines all the external file dependencies. 
