@@ -24,6 +24,8 @@ Your *could* upload the file to a shared server manually, tell them where you pu
 
 Lazy-data can manage this whole process for you, and also guarantee that your collaborators have the correct version of the file as verified by its hash. 
 
+You can also use it on your own, as a way to track and backup all of your data files. 
+
 ### Configuring 
 
 To share the data files with your team you need to set up a shared location to which your team has access to. We currently support AWS S3 and directory-over-SSH as storage backends. 
