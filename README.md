@@ -26,7 +26,7 @@ Lazy-data can manage this whole process for you, and also guarantee that your co
 
 ### Configuring 
 
-To share the data files with your team you need to set up a shared location to which everyone has access to. We currently support AWS S3 and directory-over-SSH as storage backends. 
+To share the data files with your team you need to set up a shared location to which your team has access to. We currently support AWS S3 and directory-over-SSH as storage backends. 
 
 To enable lazy-data on your repository, run the following command in your git repository root: 
 
