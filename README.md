@@ -88,12 +88,13 @@ class MyClass:
 
 The `lazy_data` function has further options that let you customise the behaviour. 
 
-Usage: `lazy_data(file_path, download_link=None, overwrite_hash="uncommitted", compress=False)`
+`lazy_data(file_path, download_link=None, overwrite_hash="uncommitted", compress=False)`
 
 Arguments:
 - `file_path` - the local file path to an existing file(s). Either a string or a list of strings. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
 - `download_link` - alternative download link for the file, e.g. if it's a public dataset or already available somewhere else. 
-- `overwrite_hash` - specifies when to overwrite an existing hash in `lazy-data.jsonl`. Default is `uncommitted` meaning that the hash will be over-written if the line containing the hash hasn't been yet committed to git. Other possible values are `never` and `always`. The former will record all versions of the file, and the later only makes sense if you treat all files as immutable.  
+- `overwrite_hash` - specifies when to overwrite an existing hash in `lazy-data.jsonl`. Default is `uncommitted` meaning that the hash will be over-written if the line containing the hash hasn't been yet committed to git. Other possible values are `never` and `always`. The former will record all versions of the file, and the later only makes sense if you treat all files as immutable.
+- `compress` if to store this fill compressed in the backend.     
 
 ## Contributing
 
