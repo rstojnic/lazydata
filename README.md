@@ -36,7 +36,7 @@ $ lazy-data config
 
 This will ask you which storage backend you want to use. For AWS you will have to provide your API key, and for directory-over-ssh the name of the server, path and an SSH key to access it.  
 
-A new file `lazy-data.jsonl` will be created. This files is a JSON-line file, meaning each JSON record is a single line in the file. It contains:
+A new file `lazy-data.jsonl` will be created. This file is a JSON-line file, meaning each complete JSON record is a single line in the file. It contains:
 
 - The location of your storage backend
 - A list of all of your data dependencies  
