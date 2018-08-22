@@ -51,13 +51,13 @@ You are now ready to add lazy data dependencies to your Python project.
 
 ### Basic usage 
 
-Use the `lazy_data()` function to add a lazy data dependency. 
+Use the `import_data()` function to add a lazy data dependency. 
 
 **my_script.py**
 ```python
-from lazy_data import lazy_data
+from lazy_data import import_data
 
-lazy_data("my_big_table.csv")
+import_data("my_big_table.csv")
 
 # at this point lazy-data will ensure `my_big_table.csv`
 # file exists in the current directory
@@ -77,30 +77,29 @@ And that's it! If your team mate tries to execute `my_script.py` they will be pr
 
 ### Usage in Python classes
 
-To use with a Python class, put `lazy_data` into your `__init__()` method. 
+To use with a Python class, put `import_data()` into your `__init__()` method. 
 
 **my_class.py**
 ```python
-from lazy_data import lazy_data
+from lazy_data import import_data
 
 class MyClass:
     def __init__(self):        
-        lazy_data("my_big_table.csv")
+        import_data("my_big_table.csv")
 ```
 
-This will ensure that whenever you instantiate your class, the required data dependencies will be present. You can also put the `lazy_data()` function call into a method or a function. 
+This will ensure that whenever you instantiate your class, the required data dependencies will be present. You can also put the `import_data()` function call into a method or a function. 
 
 ### Advanced options
 
-The `lazy_data` function has further options that let you customise the behaviour. 
+The `import_data()` function has further options that let you customise the behaviour. 
 
-`lazy_data(file_path, download_link=None, overwrite_hash="uncommitted", compress=False)`
+`data_data(file_path, download_link=None, overwrite_hash="uncommitted")`
 
 Arguments:
 - `file_path` - the local file path to an existing file(s). Either a string or a list of strings. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
 - `download_link` - alternative download link for the file, e.g. if it's a public dataset or already available somewhere else. 
 - `overwrite_hash` - specifies when to overwrite an existing hash in `lazy-data.jsonl`. Default is `uncommitted` meaning that the hash will be over-written if the line containing the hash hasn't been yet committed to git. Other possible values are `never` and `always`. The former will record all versions of the file, and the later only makes sense if you treat all files as immutable.
-- `compress` if to store this fill compressed in the backend.     
 
 ## Contributing
 
