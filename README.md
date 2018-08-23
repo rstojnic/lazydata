@@ -1,6 +1,6 @@
 # Lazy-data: lazy data dependencies
 
-Add data dependencies to a Machine Learning Python project. 
+Add data dependencies to a Python project. Optimised for Machine Learning and Data Science. 
 
 **Key features:**
 
