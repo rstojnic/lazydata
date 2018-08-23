@@ -2,7 +2,7 @@
 
 Add data dependencies to a Python project. 
 
-Key features:
+**Key features:**
 
 - Data is lazy-downloaded when needed
 - Choose your own storage backend
