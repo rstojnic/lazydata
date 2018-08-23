@@ -1,14 +1,16 @@
-# Lazy-data: lazy loading for data
+# Lazy-data: lazy data dependencies
 
-Manage your data dependencies using lazy loading. Only download data when needed and with all references in code. 
+Add data dependencies to a Python project. 
 
-It’s the easiest way to incorporate data into your git repository, with your own choice of storage backend, such as S3 or a directory on a remote server. 
+Key features:
 
-This is especially useful for Machine Learning and Data Science projects. 
+- Data is lazy-downloaded when needed
+- Choose your own storage backend
+- One-line usage for you, zero-config for your team
 
-## Installation
+A strong consistency assurance is achieved using file hashes. 
 
-Lazy-data is a Python 3 library intended to be used with Python code. 
+## Getting started
 
 Install with pip:
 
@@ -16,92 +18,68 @@ Install with pip:
 $ pip install lazy-data
 ```
 
-## Getting started
+### Add to your project
 
-You wrote some awesome machine learning or data science code that takes `my_big_table.csv` as input. Now it's the time to share with your team. 
-
-Your *could* upload the file to a shared server manually, tell them where you put it or make a download script, but it quickly turns into a mess of scripts and files. 
-
-Lazy-data can manage this whole process for you, and also guarantee that your collaborators have the correct version of the file as verified by its hash. 
-
-You can also use it on your own, as a way to track and backup all of your data files. 
-
-### Configuring 
-
-To share the data files with your team you need to set up a shared location to which your team has access to. We currently support AWS S3 and directory-over-SSH as storage backends. 
-
-To enable lazy-data on your repository, run the following command in your git repository root: 
+To enable `lazy-data` create a config file in your Python project root:
 
 ```bash
-$ lazy-data config 
+$ lazy-data init
 ```
 
-This will ask you which storage backend you want to use. For AWS you will have to provide your API key, and for directory-over-ssh the name of the server, path and an SSH key to access it.  
-
-A new file `lazy-data.jsonl` will be created. This file is a JSON-line file, meaning each complete JSON record is a single line in the file. It contains:
-
-- The location of your storage backend
-- A list of all of your data dependencies  
-
-Your secrets will be stored in `~/.lazy-data/secrets` outside of the git repository.
-
-The command will also create a post-`git push` hook that will automatically upload your data files to the storage backend when you do `git push`. 
-
-You are now ready to add lazy data dependencies to your Python project. 
-
-### Basic usage 
-
-Use the `import_data()` function to add a lazy data dependency. 
+### Usage 
 
 **my_script.py**
 ```python
 from lazy_data import import_data
 
+# lazy-data will ensure this file is downloaded
 import_data("my_big_table.csv")
 
-# at this point lazy-data will ensure `my_big_table.csv`
-# file exists in the current directory
+# work as usual ... 
+import pandas as pd
+df = pd.read_csv("my_big_table.csv")
+
 ```
 
-When you execute `my_script.py` one of the following happens:
- 
- - If the file `my_big_table.csv` **exists** and **is not recorded** in `lazy-data.jsonl` it will be marked as a dependency of `my_script.py` and added to `lazy-data.jsonl` with its hash.
- - If the file `my_big_table.csv` **exists** and **is recorded** in `lazy-data.jsonl`, the hashes will be checked against the stored value. If the hashes are the same, nothing else happens. If the hashes are different, the hash will be updated if the hash hasn't been part of a git commit yet, otherwise a new version of the file will be recorded. This behaviour can be further customised (see below)   
- - If the file `my_big_table.csv` **does not exist**, lazy-data will look for it in the storage backend using the information in `lazy-data.jsonl`. It will then download it before continuing. 
- 
-To make sure your team has the same version of the file as you, always keep the `lazy-data.jsonl` file in git, as it defines all the external file dependencies. 
+You can now push your data dependencies to a remote location to share with your team, or simply for backup!
 
-Commit all of your code files, together with `lazy-data.jsonl` into git as usual. Using our git hook, when you execute `git push` this will also upload the new data files to the storage backend.  
+If using `git` the next `git push` will upload your data to a storage backend of your choice (eg S3 or a remote directory).
 
-And that's it! If your team mate tries to execute `my_script.py` they will be prompted for backend access credentials (if they haven't provided those already) and will seamlessly download the correct data files. 
+Or, to upload manually:
 
-### Usage in Python classes
-
-To use with a Python class, put `import_data()` into your `__init__()` method. 
-
-**my_class.py**
-```python
-from lazy_data import import_data
-
-class MyClass:
-    def __init__(self):        
-        import_data("my_big_table.csv")
+```bash
+$ lazy-data push
 ```
 
-This will ensure that whenever you instantiate your class, the required data dependencies will be present. You can also put the `import_data()` function call into a method or a function. 
+## How it works
 
-### Advanced options
+The `lazy-data.yml` config file has information on the remote storage backend and tracks all data dependencies. 
 
-The `import_data()` function has further options that let you customise the behaviour. 
+Whenever the `import_data()` function is executed the following happens:
 
-`data_data(file_path, download_link=None, overwrite_hash="uncommitted")`
+1. Check if the data file is tracked in the config file
+2. If not tracked, start tracking it
+3. If tracked, see if the file hash has changed and record a new version if necessary
+
+If the file is not present, `lazy-data` will look for it at the configured storage backend and download it. 
+
+### Advanced usage
+
+Achieve multiple data dependency scenarios by putting `import_data()` into different parts of the code:
+
+- Add to `__init__(self)` of a class to add data as a class dependency
+- Add to `__init__.py` of a module to add data as a module dependency
+- Add to `setup.py` to add data as a Python package dependency
+
+The `import_data()` function also has further options that let you customise the behaviour. 
+
+`data_data(file_path, download_link=None)`
 
 Arguments:
-- `file_path` - the local file path to an existing file(s). Either a string or a list of strings. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
+- `file_path` - one or more files to download. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
 - `download_link` - alternative download link for the file, e.g. if it's a public dataset or already available somewhere else. 
-- `overwrite_hash` - specifies when to overwrite an existing hash in `lazy-data.jsonl`. Default is `uncommitted` meaning that the hash will be over-written if the line containing the hash hasn't been yet committed to git. Other possible values are `never` and `always`. The former will record all versions of the file, and the later only makes sense if you treat all files as immutable.
 
 ## Contributing
 
-The library is licenced under Apache-2 licence. Contributions are welcome!
+The library is licenced under Apache-2 licence. All contributions are welcome!
    
