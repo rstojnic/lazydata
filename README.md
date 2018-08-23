@@ -65,7 +65,7 @@ Whenever the `import_data()` function is executed this happens:
 
 If the file is not present, `lazy-data` will look for it in the storage backend and download it. 
 
-### Advanced usage
+## Advanced usage
 
 You can achieve multiple data dependency scenarios by putting `import_data()` into different parts of the code:
 
