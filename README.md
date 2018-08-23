@@ -43,7 +43,7 @@ df = pd.read_csv("my_big_table.csv")
 
 ```
 
-You can now push your data dependencies to a remote location to share with your team or for backup.
+You can now push your data dependencies to a remote location to share with your team or as backup.
 
 If using `git`, all subsequent `git push` will upload your data to a storage backend of your choice (AWS S3 and directory-over-ssh supported).
 
