@@ -71,11 +71,10 @@ You can achieve multiple data dependency scenarios by putting `import_data()` in
 - Add to `__init__.py` of a module to add data as a module dependency
 - Add to `setup.py` to add data as a Python package dependency
 
-The `import_data()` function also has further options that let you customise the behaviour:
+The `import_data()` function also has further options that let you customise the behaviour.
 
-`data_data(file_path, download_link=None)`
+Full usage: `data_data(file_path, download_link=None)`
 
-Arguments:
 - `file_path` - one or more files to download. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
 - `download_link` - alternative download link for the file, e.g. if it's a public dataset or already available somewhere else. 
 
