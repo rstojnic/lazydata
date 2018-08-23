@@ -2,7 +2,7 @@
 
 Add data dependencies to a Python project. 
 
-Optimised for Machine Learning and Data Science. 
+Optimised for Machine Learning and Data Science projects. 
 
 **Key features:**
 
