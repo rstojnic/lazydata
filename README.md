@@ -41,9 +41,9 @@ df = pd.read_csv("my_big_table.csv")
 
 ```
 
-You can now push your data dependencies to a remote location to share with your team, or simply for backup!
+You can now push your data dependencies to a remote location to share with your team or for backup.
 
-If using `git` the next `git push` will upload your data to a storage backend of your choice (eg S3 or a remote directory).
+If using `git`, all subsequent `git push` will upload your data to a storage backend of your choice (AWS S3 and directory-over-ssh supported).
 
 Or, to upload manually:
 
@@ -53,25 +53,25 @@ $ lazy-data push
 
 ## How it works
 
-The `lazy-data.yml` config file has information on the remote storage backend and tracks all data dependencies. 
+The `lazy-data.yml` config file stores the location of the remote storage backend and tracks all data dependencies. 
 
-Whenever the `import_data()` function is executed the following happens:
+Whenever the `import_data()` function is executed this happens:
 
 1. Check if the data file is tracked in the config file
 2. If not tracked, start tracking it
 3. If tracked, see if the file hash has changed and record a new version if necessary
 
-If the file is not present, `lazy-data` will look for it at the configured storage backend and download it. 
+If the file is not present, `lazy-data` will look for it in the storage backend and download it. 
 
 ### Advanced usage
 
-Achieve multiple data dependency scenarios by putting `import_data()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `import_data()` into different parts of the code:
 
 - Add to `__init__(self)` of a class to add data as a class dependency
 - Add to `__init__.py` of a module to add data as a module dependency
 - Add to `setup.py` to add data as a Python package dependency
 
-The `import_data()` function also has further options that let you customise the behaviour. 
+The `import_data()` function also has further options that let you customise the behaviour:
 
 `data_data(file_path, download_link=None)`
 
