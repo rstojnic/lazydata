@@ -10,7 +10,7 @@ It is designed for machine learning and data science project. It helps you keep 
 - Choose your own storage backend
 - One-line usage for you, zero-config for your team
 
-Strong consistency is assured by using file hashes. 
+File consistency between machines is assured by using file hashes. 
 
 ## Getting started
 
