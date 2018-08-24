@@ -1,8 +1,8 @@
 # Lazy-data: lazy data dependencies
 
-Add data dependencies to a Python project. 
+`lazy-data` is a minimalist library for including data dependencies into Python projects. 
 
-Optimised for Machine Learning and Data Science projects. 
+It is designed for machine learning and data science project. It helps you keep everything together without bloating your repository with everyone's data files. 
 
 **Key features:**
 
@@ -10,7 +10,7 @@ Optimised for Machine Learning and Data Science projects.
 - Choose your own storage backend
 - One-line usage for you, zero-config for your team
 
-A strong consistency assurance is achieved using file hashes. 
+Strong consistency is assured by using file hashes. 
 
 ## Getting started
 
