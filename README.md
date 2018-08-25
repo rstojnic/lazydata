@@ -41,15 +41,6 @@ This will:
 
 ### Freezing a file
 
-Lets say our repository structure looks like this: 
-
-``` 
-freezer.yml
-my_script.py
-data/
-     my_big_table.csv
-```
-
 To add a data file to the freezer, use `freezer("<path_to_file>")` in the code:
 
 **my_script.py**
@@ -64,7 +55,7 @@ print("Data shape:" + df.shape)
 
 ```
 
-Running this script containing `freezer("data/my_big_table.csv")` will freeze the file:
+Running the script will freeze the file:
 
 ```bash
 $ python my_script.py
@@ -72,7 +63,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ```
 
-The contents of the **freezer.yml** are now:
+The file has now been added to **freezer.yml**:
 ```yaml
 storage: s3://mybucket/freezer
 files:
