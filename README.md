@@ -36,7 +36,7 @@ And, it will create `freezer.yml` which contains a list of all the frozen files.
 
 ### Usage 
 
-Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, simply call `freeze(<path_to_file>)`:
+Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, call `freeze("<path_to_file>")`:
 
 **my_script.py**
 ```python
