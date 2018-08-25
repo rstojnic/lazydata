@@ -8,7 +8,7 @@
 
 **Benefits**:
 
-- Keeps your git repository clean with just code, but enables seamless access to any number of linked data files 
+- Keeps your git repository clean with just code, while enabling seamless access to any number of linked data files 
 - File consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or directory over SSH
 
