@@ -36,7 +36,7 @@ $ freezer init s3://mybucket/freezer
 This will:
  
 - Set your permanent storage location to S3 (the other options is directory over SSH)
-- Create `freezer.yml` which contains a list of all the frozen files.
+- Initialise`freezer.yml` which will hold the list of all the frozen files.
 
 
 ### Freezing a file
