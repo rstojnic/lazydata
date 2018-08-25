@@ -122,6 +122,12 @@ You can achieve multiple data dependency scenarios by putting `freezer()` into d
 - Add to `__init__.py` to freeze files when the python module is used
 - Add to `setup.py` to freeze files when a Python package is installed
 
+### Coming soon... 
+
+- Add metadata to a frozen file
+- Visualise frozen file provenance
+- Package frozen files with processing code
+
 ## Contributing
 
 The library is licenced under Apache-2 licence. All contributions are welcome!
