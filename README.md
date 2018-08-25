@@ -81,7 +81,7 @@ And you are done! This data file is now linked to your local repository.
 
 You can git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
-To upload the frozen data files to the remote storage use:
+To upload the frozen data files to the permanent storage (i.e. S3 in our example) use:
 
 ```bash
 $ freezer push
