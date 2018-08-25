@@ -6,9 +6,11 @@ Keeping data files in git (e.g. via `git-lfs`) results in a bloated repository t
 
 `filefreezer` is an alternative in which only the data file references are stored in `git` and data files are synced on-demand only when they are needed.
 
-This keeps your git repository clean - with just code, and enables you to seamlessly access any number of linked files. 
+**Benefits**:
 
-Consistency of files is ensured using hashes, and you can choose your own remote storage backend of choice. 
+- Keeps your git repository clean, with just code, but enables you to seamlessly access any number of linked data files 
+- Automatic data file consistency checking and versioning
+- Choose your own remote storage backend: AWS S3 or directory over SSH
 
 `file-freezer` is primarily designed for machine learning and data science project. 
 
