@@ -37,7 +37,7 @@ This will:
 
 ### Usage 
 
-In this section we'll run through the set of steps you need to use file freezer. 
+In this section we'll show how to use `filefreezer` on an example project.
 
 Lets say our repository structure looks like this: 
 
@@ -48,7 +48,7 @@ data/
      my_big_table.csv
 ```
 
-To add the datafile to the freezer, use `freeze("<path_to_file>")` in the code:
+To add a data file to the freezer, use `freeze("<path_to_file>")` in the code:
 
 **my_script.py**
 ```python
@@ -62,7 +62,7 @@ print("Data shape:" + df.shape)
 
 ```
 
-Using `freeze("data/my_big_table.csv")` adds this file  to your local freezer:
+Using `freeze("data/my_big_table.csv")` adds this file to your local freezer:
 
 **freezer.yml**
 ```yaml
@@ -73,16 +73,15 @@ files:
     usage: my_script.py
 
 ```
+And you are done! This data file is now linked to your repository.
 
-Now you can commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
+You can commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
 To upload the data files use:
 
 ```bash
 $ freezer push
 ```
-
-This command uploads the cached version of your frozen files from your local machine to the remote storage (in our case S3). 
 
 When your collaborator pulls the latest version of the git repository, they will get the script and the `freezer.yml` file as usual.  
 
