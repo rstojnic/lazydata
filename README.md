@@ -30,13 +30,10 @@ In this section we'll show how to use `filefreezer` on an example project.
 To enable `filefreezer` run in your git root:
 
 ```bash
-$ freezer init s3://mybucket/freezer
+$ freezer init 
 ```
 
-This will:
- 
-- Set your permanent storage location to S3 (the other options is directory over SSH)
-- Initialise`freezer.yml` which will hold the list of all the frozen files.
+This will initialise`freezer.yml` which will hold the list of all the frozen files.
 
 
 ### Freezing a file
@@ -65,7 +62,6 @@ $ python my_script.py
 
 The file has now been backed-up in your local freezer cache in `~/.freezer-cache` and added to **freezer.yml**:
 ```yaml
-storage: s3://mybucket/freezer
 files:
   - path: data/my_big_table.csv
     hash: 2C94697198875B6E...
@@ -79,9 +75,17 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
-You can git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
+You can set up a remote server where `filefreezer` will keep a copy of all the frozen files. To use S3 run:
+
+```bash
+$ freezer add-remote s3://mybucket/freezer
+```
+
+This will add the location of the S3 bucket to `freezer.yml`. You can also use `ssh://username@myserver/path` as a storage backend.
+
+You can now git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
-To upload the frozen data files to the permanent storage (i.e. S3 in our example) use:
+To upload the frozen data files to S3 use:
 
 ```bash
 $ freezer push
