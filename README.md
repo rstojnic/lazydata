@@ -39,6 +39,8 @@ This will:
 
 In this section we'll show how to use `filefreezer` on an example project.
 
+#### Freezing a file
+
 Lets say our repository structure looks like this: 
 
 ``` 
@@ -48,21 +50,21 @@ data/
      my_big_table.csv
 ```
 
-To add a data file to the freezer, use `freeze("<path_to_file>")` in the code:
+To add a data file to the freezer, use `freezer("<path_to_file>")` in the code:
 
 **my_script.py**
 ```python
-from filefreezer import freeze
+from filefreezer import freezer
 
 # freeze the file when loading  
 import pandas as pd
-df = pd.read_csv(freeze("data/my_big_table.csv"))
+df = pd.read_csv(freezer("data/my_big_table.csv"))
 
 print("Data shape:" + df.shape)
 
 ```
 
-Using `freeze("data/my_big_table.csv")` adds this file to your local freezer:
+Using `freezer("data/my_big_table.csv")` adds this file to your local freezer:
 
 **freezer.yml**
 ```yaml
@@ -75,7 +77,9 @@ files:
 ```
 And you are done! This data file is now linked to your repository.
 
-You can commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
+#### Sharing your frozen files
+
+You can git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
 To upload the data files use:
 
@@ -85,7 +89,7 @@ $ freezer push
 
 When your collaborator pulls the latest version of the git repository, they will get the script and the `freezer.yml` file as usual.  
 
-Data files will be downloaded when your collaborator runs `my_script.py` and the `freeze("my_big_table.csv")` is executed:
+Data files will be downloaded when your collaborator runs `my_script.py` and the `freezer("my_big_table.csv")` is executed:
 
 ```bash
 $ python my_script.py
@@ -111,7 +115,7 @@ $ freezer pull .
 
 ### Advanced usage
 
-You can achieve multiple data dependency scenarios by putting `freeze()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `freezer()` into different parts of the code:
 
 - Add to outputs of your data pipeline to freeze the outputs
 - Add to `__init__(self)` of a class to add data as a class dependency
