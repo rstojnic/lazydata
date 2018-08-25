@@ -75,7 +75,7 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
-To share your frozen files, add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
+To share your frozen files add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
 
 ```bash
 $ freezer add-remote s3://mybucket/freezer
