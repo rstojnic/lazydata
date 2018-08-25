@@ -126,7 +126,7 @@ You can achieve multiple data dependency scenarios by putting `freezer()` into d
 
 - Add metadata to a frozen file
 - Visualise frozen file provenance
-- Package frozen files with processing code
+- Distribute frozen files with processing code
 
 ## Contributing
 
