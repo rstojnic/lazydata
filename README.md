@@ -40,7 +40,7 @@ This will:
 Lets say our repository structure looks like this: 
 
 ``` 
-.
+/
   freezer.yml
   my_script.py
   data/
