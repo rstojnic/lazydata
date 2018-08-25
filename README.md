@@ -1,10 +1,10 @@
-# filefreezer: scalable data dependencies
+# datafreezer: scalable data dependencies
 
-`filefreezer` is a minimalist library for including data dependencies into Python projects. 
+`datafreezer` is a minimalist library for including data dependencies into Python projects. 
 
 **Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that take ages to pull.  
 
-**Solution**: `filefreezer` only stores references to data files in git, and syncs data files on-demand when they are needed.
+**Solution**: `datafreezer` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
 **Benefits**:
 
@@ -19,15 +19,15 @@
 Install with pip:
 
 ```bash
-$ pip install filefreezer
+$ pip install datafreezer
 ```
 ## Getting started 
 
-In this section we'll show how to use `filefreezer` on an example project.
+In this section we'll show how to use `datafreezer` on an example project.
 
 ### Add to your project
 
-To enable `filefreezer` run in your git root:
+To enable `datafreezer` run in your git root:
 
 ```bash
 $ freezer init 
@@ -42,7 +42,7 @@ To add a data file to the freezer, use `freezer("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
-from filefreezer import freezer
+from datafreezer import freezer
 
 # freeze the file when loading  
 import pandas as pd
@@ -75,7 +75,7 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
-You can set up a remote server where `filefreezer` will keep a copy of your frozen files so others can access them. To use S3 run:
+You can set up a remote server where `datafreezer` will keep a copy of your frozen files so others can access them. To use S3 run:
 
 ```bash
 $ freezer add-remote s3://mybucket/freezer
