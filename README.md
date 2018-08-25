@@ -64,9 +64,15 @@ print("Data shape:" + df.shape)
 
 ```
 
-Using `freezer("data/my_big_table.csv")` adds this file to your local freezer:
+Running this script and `freezer("data/my_big_table.csv")` will freeze the file:
 
-**freezer.yml**
+```bash
+$ python my_script.py
+## FREEZER: Freezing new file data/my_big_table.csv
+## Data shape: (10000,100)
+```
+
+The contents of the **freezer.yml** are now:
 ```yaml
 storage: s3://mybucket/freezer
 files:
