@@ -1,61 +1,60 @@
-# Lazy-data: lazy data dependencies
+# filefreezer: scalable data dependencies
 
-`lazy-data` is a minimalist library for including data dependencies into Python projects. 
+`filefreezer` is a minimalist library for including data dependencies into Python projects. 
 
-It is designed for machine learning and data science. It helps you keep everything together without bloating your local copy with files you don't need. 
+Keeping data files in git (e.g. via `git-lfs`) results in a bloated repository that take ages to pull.  
 
-**Key features:**
+`filefreezer` is an alternative in which only the data file references are stored in `git` and data files are synced on-demand only when they are needed.
 
-- Data is lazy-downloaded when needed
-- Choose your own storage backend
-- One-line usage for you, zero-config for your team
+This keeps your git repository clean - with just code, and enables you to seamlessly access any number of linked files. 
 
-File consistency between machines is assured by using file hashes. 
+Consistency of files is ensured using hashes, and you can choose your own remote storage backend of choice. 
+
+`file-freezer` is primarily designed for machine learning and data science project. 
 
 ## Getting started
 
 Install with pip:
 
 ```bash
-$ pip install lazy-data
+$ pip install filefreezer
 ```
 
 ### Add to your project
 
-To enable `lazy-data` create a config file in your Python project root:
+To enable `filefreezer` create a config file in your Python project root:
 
 ```bash
-$ lazy-data init
+$ freezer init
 ```
+
+This will create `freezer.yml` which will contain the list of all the frozen files. A frozen file is represented by its path, hash and permanent remote storage location (e.g. S3).
 
 ### Usage 
 
 **my_script.py**
 ```python
-from lazy_data import import_data
+from filefreezer import freeze
 
-# lazy-data will ensure this file is downloaded
-import_data("my_big_table.csv")
-
-# work as usual ... 
+# freeze the file  
 import pandas as pd
-df = pd.read_csv("my_big_table.csv")
+df = pd.read_csv(freeze("my_big_table.csv"))
 
 ```
 
-You can now push your data dependencies to a storage backend to share with your team or as backup.
+You can now push your data dependencies to a storage backend (e.g. S3) to share with your team or as backup.
 
 If using `git`, all subsequent `git push` will upload your data to a storage backend of your choice (AWS S3 and directory-over-ssh supported).
 
 Or, to upload manually:
 
 ```bash
-$ lazy-data push
+$ freezer push
 ```
 
 ### How it works
 
-The `lazy-data.yml` config file stores the location of the remote storage backend and tracks all data dependencies. 
+The `filefreezer.yml` config file stores the location of the remote storage backend and tracks all data dependencies. 
 
 Whenever the `import_data()` function is executed this happens:
 
@@ -63,7 +62,7 @@ Whenever the `import_data()` function is executed this happens:
 2. If not tracked, start tracking it
 3. If tracked, see if the file hash has changed and record a new version if necessary
 
-If the file is not present, `lazy-data` will look for it in the storage backend and download it. 
+If the file is not present, `filefreezer` will look for it in the storage backend and download it. 
 
 ### Advanced usage
 
