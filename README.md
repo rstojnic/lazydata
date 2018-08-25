@@ -41,7 +41,7 @@ This will:
 
 ### Freezing a file
 
-To add a data file to the freezer, use `freezer("<path_to_file>")` in the code:
+To add a data file to the freezer, use `freezer("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
