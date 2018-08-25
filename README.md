@@ -75,7 +75,7 @@ files:
 
 If you modify the data file and re-run the script, this will add another entry to the yml file with the updated hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file.   
 
-And you are done! This data file is now linked to your repository.
+And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
