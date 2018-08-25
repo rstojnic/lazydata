@@ -75,7 +75,7 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
-You can set up a remote server where `filefreezer` will keep a copy of all the frozen files. To use S3 run:
+You can set up a remote server where `filefreezer` will keep a copy of your frozen files so other can access them. To use S3 run:
 
 ```bash
 $ freezer add-remote s3://mybucket/freezer
