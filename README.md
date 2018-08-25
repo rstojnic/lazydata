@@ -46,7 +46,7 @@ data/
      my_big_table.csv
 ```
 
-To add the datafile to the freezer, call `freeze("<path_to_file>")`:
+To add the datafile to the freezer, use `freeze("<path_to_file>")` in the code:
 
 **my_script.py**
 ```python
