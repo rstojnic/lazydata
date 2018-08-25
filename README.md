@@ -62,7 +62,7 @@ print("Data shape:" + df.shape)
 
 ```
 
-This will add `data/my_big_table.yml` to your local freezer file:
+Using `freeze("data/my_big_table.csv")` adds this file  to your local freezer:
 
 **freezer.yml**
 ```yaml
@@ -74,7 +74,7 @@ files:
 
 ```
 
-Next, commit both `my_script.py` and `freezer.yml` into git and push to remove. You can add you data file, or the whole `data/` directory to `.gitignore`. 
+Now you can commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
 To upload the data files use:
 
@@ -82,9 +82,9 @@ To upload the data files use:
 $ freezer push
 ```
 
-This will upload the cached version of your frozen files from your local machine to the remote storage (in our case S3). 
+This command uploads the cached version of your frozen files from your local machine to the remote storage (in our case S3). 
 
-When your collaborator pulls the latest version of the git repository, they will receive the script and the `freezer.yml` file, but no data files. 
+When your collaborator pulls the latest version of the git repository, they will get the script and the `freezer.yml` file as usual.  
 
 Data files will be downloaded when your collaborator runs `my_script.py` and the `freeze("my_big_table.csv")` is executed:
 
