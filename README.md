@@ -113,7 +113,7 @@ $ freezer pull 653ca451
 $ freezer pull .
 ```
 
-Because `freezer.yml` is tracked by git you can safely make and switch between git branches. 
+Because `freezer.yml` is tracked by git you can safely make and switch git branches. 
 
 ### Advanced usage
 
