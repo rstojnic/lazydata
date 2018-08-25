@@ -24,17 +24,28 @@ $ pip install filefreezer
 
 ### Add to your project
 
-To enable `filefreezer` create a config file in your Python project root:
+To enable `filefreezer`:
 
 ```bash
 $ freezer init s3://mybucket/freezer
 ```
 
-This will set your permanent storage location to S3 (but you can also use directory over SSH).
-
-And, it will create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
+This will:
+ 
+1. Set your permanent storage location to S3 (the other options is directory over SSH)
+2. Create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
 
 ### Usage 
+
+Lets say our repository structure looks like this: 
+
+``` 
+.
++-- freezer.yml
++-- my_script.py
++-- data/
+|   +--- my_big_table.csv
+```
 
 Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, call `freeze("<path_to_file>")`:
 
@@ -44,43 +55,45 @@ from filefreezer import freeze
 
 # freeze the file when loading  
 import pandas as pd
-df = pd.read_csv(freeze("my_big_table.csv"))
+df = pd.read_csv(freeze("data/my_big_table.csv"))
 
 print("Data shape:" + df.shape)
 
 ```
 
-This will add `my_big_table.yml` to your local freezer file:
+This will add `data/my_big_table.yml` to your local freezer file:
 
 **freezer.yml**
 ```yaml
 storage: s3://mybucket/freezer
 files:
-  - path: my_big_table.csv
+  - path: data/my_big_table.csv
     hash: 2C94697198875B6E...
     usage: my_script.py
 
 ```
 
-Next, commit both `my_script.py` and `freezer.yml` into git and push to remove. To upload the data files use:
+Next, commit both `my_script.py` and `freezer.yml` into git and push to remove. You can add you data file, or the whole `data/` directory to `.gitignore`. 
+ 
+To upload the data files use:
 
 ```bash
 $ freezer push
 ```
 
-This will upload the cached version of files from your local machine to the remote storage (in our case S3). 
+This will upload the cached version of your frozen files from your local machine to the remote storage (in our case S3). 
 
 When your collaborator pulls the latest version of the git repository, they will receive the script and the `freezer.yml` file, but no data files. 
 
-Data files will be downloaded when your collaborator when `my_script.py` is run:
+Data files will be downloaded when your collaborator runs `my_script.py` and the `freeze("my_big_table.csv")` is executed:
 
 ```bash
 $ python my_script.py
-## FREEZER: Downloading my_big_table.csv ...
+## FREEZER: Downloading frozen file my_big_table.csv ...
 ## Data shape: (10000,100)
 ``` 
 
-You can also download specific files by name, or python file where they are used:
+To get the data files without running any code, you can also use the command line utility:
 
 ```bash
 # download just this file
@@ -89,7 +102,10 @@ $ freezer pull my_big_table.csv
 # download everything frozen in this script
 $ freezer pull my_script.py
 
-# download everything
+# download everything frozen in this git commit
+$ freezer pull 653ca451
+
+# download everything in HEAD
 $ freezer pull .
 ```
 
@@ -97,7 +113,7 @@ $ freezer pull .
 
 You can achieve multiple data dependency scenarios by putting `freeze()` into different parts of the code:
 
-- Add to outputs of your data pipeline to also freeze the outputs
+- Add to outputs of your data pipeline to freeze the outputs
 - Add to `__init__(self)` of a class to add data as a class dependency
 - Add to `__init__.py` of a module to add data as a module dependency
 - Add to `setup.py` to add data as a Python package dependency
