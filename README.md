@@ -37,6 +37,8 @@ This will:
 
 ### Usage 
 
+In this section we'll run through the set of steps you need to use file freezer. 
+
 Lets say our repository structure looks like this: 
 
 ``` 
