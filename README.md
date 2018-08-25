@@ -27,59 +27,80 @@ $ pip install filefreezer
 To enable `filefreezer` create a config file in your Python project root:
 
 ```bash
-$ freezer init
+$ freezer init s3://mybucket/freezer
 ```
 
-This will create `freezer.yml` which will contain the list of all the frozen files. A frozen file is represented by its path, hash and permanent remote storage location (e.g. S3).
+This will set your permanent storage location to S3 (but you can also use directory over SSH).
+
+And, it will create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
 
 ### Usage 
+
+Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, simply call `freeze(<path_to_file>)`:
 
 **my_script.py**
 ```python
 from filefreezer import freeze
 
-# freeze the file  
+# freeze the file when loading  
 import pandas as pd
 df = pd.read_csv(freeze("my_big_table.csv"))
 
+print("Data shape:" + df.shape)
+
 ```
 
-You can now push your data dependencies to a storage backend (e.g. S3) to share with your team or as backup.
+This will add `my_big_table.yml` to your local freezer file:
 
-If using `git`, all subsequent `git push` will upload your data to a storage backend of your choice (AWS S3 and directory-over-ssh supported).
+**freezer.yml**
+```yaml
+storage: s3://mybucket/freezer
+files:
+  - path: my_big_table.csv
+    hash: 2C94697198875B6E...
+    usage: my_script.py
 
-Or, to upload manually:
+```
+
+Next, commit both `my_script.py` and `freezer.yml` into git and push to remove. To upload the data files use:
 
 ```bash
 $ freezer push
 ```
 
-### How it works
+This will upload the cached version of files from your local machine to the remote storage (in our case S3). 
 
-The `filefreezer.yml` config file stores the location of the remote storage backend and tracks all data dependencies. 
+When your collaborator pulls the latest version of the git repository, they will receive the script and the `freezer.yml` file, but no data files. 
 
-Whenever the `import_data()` function is executed this happens:
+Data files will be downloaded when your collaborator when `my_script.py` is run:
 
-1. Check if the data file is tracked in the config file
-2. If not tracked, start tracking it
-3. If tracked, see if the file hash has changed and record a new version if necessary
+```bash
+$ python my_script.py
+## FREEZER: Downloading my_big_table.csv ...
+## Data shape: (10000,100)
+``` 
 
-If the file is not present, `filefreezer` will look for it in the storage backend and download it. 
+You can also download specific files by name, or python file where they are used:
+
+```bash
+# download just this file
+$ freezer pull my_big_table.csv
+
+# download everything frozen in this script
+$ freezer pull my_script.py
+
+# download everything
+$ freezer pull .
+```
 
 ### Advanced usage
 
-You can achieve multiple data dependency scenarios by putting `import_data()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `freeze()` into different parts of the code:
 
+- Add to outputs of your data pipeline to also freeze the outputs
 - Add to `__init__(self)` of a class to add data as a class dependency
 - Add to `__init__.py` of a module to add data as a module dependency
 - Add to `setup.py` to add data as a Python package dependency
-
-The `import_data()` function also has further options that let you customise the behaviour.
-
-`data_data(file_path, download_link=None)`
-
-- `file_path` - one or more files to download. Glob-style wildcards are accepted, e.g. `"data/*.csv"`. 
-- `download_link` - alternative download link for the file, e.g. if it's a public dataset or already available somewhere else. 
 
 ## Contributing
 
