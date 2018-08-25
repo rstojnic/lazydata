@@ -4,7 +4,7 @@
 
 **Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that take ages to pull.  
 
-**Our solution**: `filefreezer` store only references to data file in git, and syncs data files on-demand when they are needed.
+**Solution**: `filefreezer` store only references to data file in git, and syncs data files on-demand when they are needed.
 
 **Benefits**:
 
