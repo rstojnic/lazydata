@@ -46,7 +46,7 @@ data/
      my_big_table.csv
 ```
 
-Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, call `freeze("<path_to_file>")`:
+We want to your the data file in our script. To add it to the file freezer, call `freeze("<path_to_file>")`:
 
 **my_script.py**
 ```python
