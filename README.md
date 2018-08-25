@@ -41,10 +41,10 @@ Lets say our repository structure looks like this:
 
 ``` 
 .
-+-- freezer.yml
-+-- my_script.py
-+-- data/
-|   +--- my_big_table.csv
+  freezer.yml
+  my_script.py
+  data/
+       my_big_table.csv
 ```
 
 Lets say you want to use a local data file `my_big_table.csv` in your Python project. To add it to the file freezer, call `freeze("<path_to_file>")`:
