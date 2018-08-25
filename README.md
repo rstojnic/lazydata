@@ -63,7 +63,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ```
 
-The file has now been added to **freezer.yml**:
+The file has now been backed-up in your local freezer cache in `~/.freezer-cache` and added to **freezer.yml**:
 ```yaml
 storage: s3://mybucket/freezer
 files:
