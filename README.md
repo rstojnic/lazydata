@@ -64,7 +64,7 @@ print("Data shape:" + df.shape)
 
 ```
 
-Running this script and `freezer("data/my_big_table.csv")` will freeze the file:
+Running this script containing `freezer("data/my_big_table.csv")` will freeze the file:
 
 ```bash
 $ python my_script.py
