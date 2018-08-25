@@ -2,9 +2,9 @@
 
 `filefreezer` is a minimalist library for including data dependencies into Python projects. 
 
-Keeping data files in git (e.g. via git-lfs) results in a bloated repository that take ages to pull.  
+**Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that take ages to pull.  
 
-`filefreezer` is an alternative in which only the data file references are stored in git and data files are synced on-demand when they are needed.
+**Our solution**: `filefreezer` store only references to data file in git and data files are synced on-demand when they are needed.
 
 **Benefits**:
 
