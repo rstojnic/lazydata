@@ -9,7 +9,7 @@ Keeping data files in git (e.g. via git-lfs) results in a bloated repository tha
 **Benefits**:
 
 - Keeps your git repository clean, with just code, but gives you seamless access any number of linked data files 
-- Data file consistency assured using file hashes and automatic versioning
+- File consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or directory over SSH
 
 `file-freezer` is primarily designed for machine learning and data science project. 
