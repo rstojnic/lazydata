@@ -21,8 +21,11 @@ Install with pip:
 ```bash
 $ pip install filefreezer
 ```
+### Usage 
 
-### Add to your project
+In this section we'll show how to use `filefreezer` on an example project.
+
+#### Add to your project
 
 To enable `filefreezer`:
 
@@ -32,12 +35,9 @@ $ freezer init s3://mybucket/freezer
 
 This will:
  
-1. Set your permanent storage location to S3 (the other options is directory over SSH)
-2. Create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
+- Set your permanent storage location to S3 (the other options is directory over SSH)
+- Create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
 
-### Usage 
-
-In this section we'll show how to use `filefreezer` on an example project.
 
 #### Freezing a file
 
