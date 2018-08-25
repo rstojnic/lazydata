@@ -97,7 +97,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ``` 
 
-To get the data files without running any code, you can also use the command line utility:
+To get the data files without running the code, you can also use the command line utility:
 
 ```bash
 # download just this file
