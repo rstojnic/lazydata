@@ -4,7 +4,7 @@
 
 **Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that take ages to pull.  
 
-**Solution**: `filefreezer` store only references to data file in git, and syncs data files on-demand when they are needed.
+**Solution**: `filefreezer` store only references to data files in git, and syncs data files on-demand when they are needed.
 
 **Benefits**:
 
@@ -118,9 +118,9 @@ $ freezer pull .
 You can achieve multiple data dependency scenarios by putting `freezer()` into different parts of the code:
 
 - Add to outputs of your data pipeline to freeze the outputs
-- Add to `__init__(self)` of a class to add data as a class dependency
-- Add to `__init__.py` of a module to add data as a module dependency
-- Add to `setup.py` to add data as a Python package dependency
+- Add to `__init__(self)` to freeze files when the object is created
+- Add to `__init__.py` to freeze files when the python module is used
+- Add to `setup.py` to freeze files when a Python package is installed
 
 ## Contributing
 
