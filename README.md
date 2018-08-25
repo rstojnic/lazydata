@@ -75,13 +75,13 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your frozen files
 
-You can set up a remote server where `datafreezer` will keep a copy of your frozen files so others can access them. To use S3 run:
+To share your frozen files, add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
 
 ```bash
 $ freezer add-remote s3://mybucket/freezer
 ```
 
-This will add the location of the S3 bucket to `freezer.yml`. You can also use `ssh://username@myserver/path` as a storage backend.
+This will configure the S3 backend and also add it to `freezer.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a storage backend.
 
 You can now git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
