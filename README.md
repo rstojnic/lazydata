@@ -14,18 +14,18 @@
 
 `file-freezer` is primarily designed for machine learning and data science project. 
 
-## Getting started
+## Installation
 
 Install with pip:
 
 ```bash
 $ pip install filefreezer
 ```
-### Usage 
+## Getting started 
 
 In this section we'll show how to use `filefreezer` on an example project.
 
-#### Add to your project
+### Add to your project
 
 To enable `filefreezer`:
 
@@ -39,7 +39,7 @@ This will:
 - Create `freezer.yml` which contains a list of all the frozen files. A frozen file is represented by its path and hash.
 
 
-#### Freezing a file
+### Freezing a file
 
 Lets say our repository structure looks like this: 
 
@@ -77,7 +77,7 @@ files:
 ```
 And you are done! This data file is now linked to your repository.
 
-#### Sharing your frozen files
+### Sharing your frozen files
 
 You can git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
  
