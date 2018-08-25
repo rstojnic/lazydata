@@ -27,7 +27,7 @@ In this section we'll show how to use `filefreezer` on an example project.
 
 ### Add to your project
 
-To enable `filefreezer` run:
+To enable `filefreezer` run in your git root:
 
 ```bash
 $ freezer init s3://mybucket/freezer
