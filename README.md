@@ -6,7 +6,7 @@
 
 **Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
-**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. `lazydata` achieves exactly this in a minimal way, while keeping everything neatly together.     
+**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. `lazydata` achieves exactly this in a minimal way.    
 
 **Benefits**:
 
@@ -14,7 +14,7 @@
 - Data consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or directory over SSH
 
-`lazydata` is primarily designed for machine learning and data science project. 
+`lazydata` is primarily designed for machine learning and data science project.  
 
 ## Installation
 
