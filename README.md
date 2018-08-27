@@ -16,16 +16,17 @@
 
 `lazydata` is primarily designed for machine learning and data science project.  
 
-## Installation
+## Getting started 
+
+In this section we'll show how to use `lazydata` on an example project.
+
+### Installation
 
 Install with pip:
 
 ```bash
 $ pip install lazydata
 ```
-## Getting started 
-
-In this section we'll show how to use `lazydata` on an example project.
 
 ### Add to your project
 
@@ -61,7 +62,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ```
 
-The file has now been backed-up in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
+The file has now been stored in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
 ```yaml
 files:
   - path: data/my_big_table.csv
@@ -70,9 +71,9 @@ files:
 
 ```
 
-If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
-
 Locally stored files in your lazydata cache are hard-linked, meaning that they don't take any extra space on your hard drive (unless you delete or modify the original file in which case a copy of the file is kept). 
+
+If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
 
 And you are done! This data file is now linked to your local repository.
 
