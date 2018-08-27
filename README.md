@@ -135,7 +135,7 @@ You can achieve multiple data dependency scenarios by putting `lazydata.store()`
 
 - Add metadata to a stored file
 - Visualise stored file provenance
-- Freezing data coming from databases and APIs
+- Storing data coming from databases and APIs
 
 ## Contributing
 
