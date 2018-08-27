@@ -6,7 +6,7 @@
 
 **Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
-**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. `lazydata` achieves exactly this in a minimal way.    
+**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. `lazydata` achieves exactly this in a minimal way, while keeping everything neatly together.     
 
 **Benefits**:
 
