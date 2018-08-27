@@ -2,11 +2,11 @@
 
 `lazydata` is a minimalist library for including data dependencies into Python projects. 
 
-**Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that takes ages to pull.  
+**Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that takes ages to pull.   
 
 **Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
-**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. Lazydata achieves exactly this in a minimal way.    
+**Why**: The semantics of code and data are different - code needs to be versioned to merge it, and data just needs to be kept in sync. `lazydata` achieves exactly this in a minimal way.    
 
 **Benefits**:
 
