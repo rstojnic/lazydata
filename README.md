@@ -6,6 +6,8 @@
 
 **Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
+**Why**: The semantics of code and data are different - code is meant to be versioned, and data just needs to be kept in sync. There is no need to keep a local copy of all the data ever used.   
+
 **Benefits**:
 
 - Keeps your git repository clean with just code, while enabling seamless access to any number of linked data files 
