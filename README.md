@@ -88,7 +88,7 @@ This will configure the S3 backend and also add it to `lazydata.yml` for future 
 
 You can now git commit and push your  `my_script.py` and `lazydata.yml` files as you normally would. 
  
-To upload the stored data files to S3 use:
+To copy the stored data files to S3 use:
 
 ```bash
 $ lazydata push
