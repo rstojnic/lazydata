@@ -29,7 +29,7 @@ In this section we'll show how to use `lazydata` on an example project.
 
 ### Add to your project
 
-To enable `lazydata` run in your git root:
+To enable `lazydata` run in your git repository root:
 
 ```bash
 $ lazydata init 
