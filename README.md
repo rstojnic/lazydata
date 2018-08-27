@@ -1,10 +1,10 @@
-# datafreezer: scalable data dependencies
+# lazydata: scalable data dependencies
 
-`datafreezer` is a minimalist library for including data dependencies into Python projects. 
+`lazydata` is a minimalist library for including data dependencies into Python projects. 
 
 **Problem**: Keeping data files in git (e.g. via git-lfs) results in a bloated repository that takes ages to pull.  
 
-**Solution**: `datafreezer` only stores references to data files in git, and syncs data files on-demand when they are needed.
+**Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
 
 **Benefits**:
 
@@ -12,55 +12,54 @@
 - Data consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or directory over SSH
 
-`datafreezer` is primarily designed for machine learning and data science project. 
+`lazydata` is primarily designed for machine learning and data science project. 
 
 ## Installation
 
 Install with pip:
 
 ```bash
-$ pip install datafreezer
+$ pip install lazydata
 ```
 ## Getting started 
 
-In this section we'll show how to use `datafreezer` on an example project.
+In this section we'll show how to use `lazydata` on an example project.
 
 ### Add to your project
 
-To enable `datafreezer` run in your git root:
+To enable `lazydata` run in your git root:
 
 ```bash
-$ freezer init 
+$ lazydata init 
 ```
 
-This will initialise`freezer.yml` which will hold the list of all the frozen files.
+This will initialise`lazydata.yml` which will hold the list of files managed by lazydata. 
 
+### Storing a file
 
-### Freezing a file
-
-To add a data file to the freezer, use `freezer("<path_to_file>")` in your code:
+To add a file to the lazydata data store use `store("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
-from datafreezer import freezer
+import lazydata as ld
 
-# freeze the file when loading  
+# store the file when loading  
 import pandas as pd
-df = pd.read_csv(freezer("data/my_big_table.csv"))
+df = pd.read_csv(ld.store("data/my_big_table.csv"))
 
 print("Data shape:" + df.shape)
 
 ```
 
-Running the script will freeze the file:
+Running the script will store the file:
 
 ```bash
 $ python my_script.py
-## FREEZER: Freezing new file data/my_big_table.csv
+## lazydata: Storing a new file data/my_big_table.csv
 ## Data shape: (10000,100)
 ```
 
-The file has now been backed-up in your local freezer cache in `~/.freezer-cache` and added to **freezer.yml**:
+The file has now been backed-up in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
 ```yaml
 files:
   - path: data/my_big_table.csv
@@ -69,35 +68,37 @@ files:
 
 ```
 
-If you modify the data file and re-run the script, this will add another entry to the yml file with the updated hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file.   
+If you modify the data file and re-run the script, this will add another entry to the yml file with the updated hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
+
+Locally stored files in your lazydata cache are hard-linked, meaning that they don't take any extra space on your hard drive (unless you delete or modify the original file in which case a copy of the file is kept). 
 
 And you are done! This data file is now linked to your local repository.
 
-### Sharing your frozen files
+### Sharing your stored files
 
-To share your frozen files add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
+To share your stored files add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
 
 ```bash
-$ freezer add-remote s3://mybucket/freezer
+$ lazydata add-remote s3://mybucket/lazydata
 ```
 
-This will configure the S3 backend and also add it to `freezer.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a storage backend.
+This will configure the S3 backend and also add it to `lazydata.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a storage backend.
 
-You can now git commit and push your  `my_script.py` and `freezer.yml` files as you normally would. 
+You can now git commit and push your  `my_script.py` and `lazydata.yml` files as you normally would. 
  
-To upload the frozen data files to S3 use:
+To upload the stored data files to S3 use:
 
 ```bash
-$ freezer push
+$ lazydata push
 ```
 
-When your collaborator pulls the latest version of the git repository, they will get the script and the `freezer.yml` file as usual.  
+When your collaborator pulls the latest version of the git repository, they will get the script and the `lazydata.yml` file as usual.  
 
-Data files will be downloaded when your collaborator runs `my_script.py` and the `freezer("my_big_table.csv")` is executed:
+Data files will be downloaded when your collaborator runs `my_script.py` and the `lazydata("my_big_table.csv")` is executed:
 
 ```bash
 $ python my_script.py
-## FREEZER: Downloading frozen file my_big_table.csv ...
+## lazydata: Downloading stored file my_big_table.csv ...
 ## Data shape: (10000,100)
 ``` 
 
@@ -105,23 +106,23 @@ To get the data files without running the code, you can also use the command lin
 
 ```bash
 # download just this file
-$ freezer pull my_big_table.csv
+$ lazydata pull my_big_table.csv
 
-# download everything frozen in this script
-$ freezer pull my_script.py
+# download everything stored in this script
+$ lazydata pull my_script.py
 
-# download everything frozen in this git commit
-$ freezer pull 653ca451
+# download everything stored in this git commit
+$ lazydata pull 653ca451
 
 # download everything in HEAD
-$ freezer pull .
+$ lazydata pull .
 ```
 
-Because `freezer.yml` is tracked by git you can safely make and switch git branches. 
+Because `lazydata.yml` is tracked by git you can safely make and switch git branches. 
 
 ### Advanced usage
 
-You can achieve multiple data dependency scenarios by putting `freezer()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `lazydata.store()` into different parts of the code:
 
 - Add to outputs of your data pipeline to freeze the outputs
 - Add to `__init__(self)` to freeze files when the object is created
@@ -130,8 +131,8 @@ You can achieve multiple data dependency scenarios by putting `freezer()` into d
 
 ### Coming soon... 
 
-- Add metadata to a frozen file
-- Visualise frozen file provenance
+- Add metadata to a stored file
+- Visualise stored file provenance
 - Freezing data coming from databases and APIs
 
 ## Contributing
