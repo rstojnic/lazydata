@@ -70,7 +70,7 @@ files:
 
 ```
 
-If you modify the data file and re-run the script, this will add another entry to the yml file with the updated hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
+If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
 
 Locally stored files in your lazydata cache are hard-linked, meaning that they don't take any extra space on your hard drive (unless you delete or modify the original file in which case a copy of the file is kept). 
 
