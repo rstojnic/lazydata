@@ -126,10 +126,10 @@ Because `lazydata.yml` is tracked by git you can safely make and switch git bran
 
 You can achieve multiple data dependency scenarios by putting `lazydata.store()` into different parts of the code:
 
-- Add to outputs of your data pipeline to freeze the outputs
-- Add to `__init__(self)` to freeze files when the object is created
-- Add to `__init__.py` to freeze files when the python module is used
-- Add to `setup.py` to freeze files when a Python package is installed
+- Add to outputs of your data pipeline to store the outputs
+- Add to `__init__(self)` to store files when the object is created
+- Add to `__init__.py` to store files when the python module is used
+- Add to `setup.py` to store files when a Python package is installed
 
 ### Coming soon... 
 
