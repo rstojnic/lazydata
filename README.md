@@ -78,13 +78,13 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your stored files
 
-To access your stored files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a storage backend run:
+To access your stored files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a retemo storage backend run:
 
 ```bash
 $ lazydata add-remote s3://mybucket/lazydata
 ```
 
-This will configure the S3 backend and also add it to `lazydata.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a storage backend.
+This will configure the S3 backend and also add it to `lazydata.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a remote storage backend.
 
 You can now git commit and push your  `my_script.py` and `lazydata.yml` files as you normally would. 
  
