@@ -113,13 +113,13 @@ To get the data files without running the code, you can also use the command lin
 # download just this file
 $ lazydata pull my_big_table.csv
 
-# download everything stored in this script
+# download everything used in this script
 $ lazydata pull my_script.py
 
-# download everything stored in this git commit
+# download everything added in this git commit
 $ lazydata pull 653ca451
 
-# download everything in the current directory
+# download everything stored in the current directory
 $ lazydata pull .
 
 # download the latest version of all files previous downloaded
