@@ -11,16 +11,8 @@ class LocalStorage:
     """
     An abstraction layer for the local cache
 
-    This class is a singleton - it always returns the same instance of the local storage backend
+    This class always re-reads all the config files, making sure we have the current latest version.
     """
-
-    __instance = None
-
-    def __new__(cls):
-        if LocalStorage.__instance is None:
-            LocalStorage.__instance = object.__new__(cls)
-
-        return LocalStorage.__instance
 
     def __init__(self):
         """
@@ -33,6 +25,7 @@ class LocalStorage:
         # base path where all the data and metadata is stored
         self.base_path = Path(home, ".lazydata")
         self.config_path = Path(self.base_path, "config.yml")
+        self.files_path = Path(self.base_path, "datafiles")
 
         # make sure base path exists
         if not self.base_path.exists():
@@ -42,5 +35,10 @@ class LocalStorage:
             with open(self.config_path, "w") as fp:
                 fp.write("version: 1\n")
 
+        # make sure the datafile store exists
+        if not self.files_path.exists():
+            self.files_path.mkdir()
+
+        # Load in the config file
         with open(self.config_path) as fp:
             self.config = yaml.load(fp)
