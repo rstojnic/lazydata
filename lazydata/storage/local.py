@@ -6,10 +6,13 @@ An abstraction layer for the local cache
 from pathlib import Path
 import yaml
 import sqlite3
+import os
 
 from peewee import SqliteDatabase, Model, CharField, IntegerField
 
-BASE_PATH = Path(Path.home(), ".lazydata")
+from lazydata.storage.hash import calculate_file_sha256
+
+BASE_PATH = Path(Path.home(), ".lazydata").resolve()
 METADB_PATH = Path(BASE_PATH, "metadb.sqlite3")
 
 db = SqliteDatabase(str(METADB_PATH))
@@ -31,7 +34,7 @@ class LocalStorage:
         # base path where all the data and metadata is stored
         self.base_path = BASE_PATH
         self.config_path = Path(self.base_path, "config.yml")
-        self.files_path = Path(self.base_path, "datafiles")
+        self.data_path = Path(self.base_path, "data")
         self.metadb_path = METADB_PATH
 
         # make sure base path exists
@@ -43,8 +46,8 @@ class LocalStorage:
                 fp.write("version: 1\n")
 
         # make sure the datafile store exists
-        if not self.files_path.exists():
-            self.files_path.mkdir()
+        if not self.data_path.exists():
+            self.data_path.mkdir()
 
         # Load in the config file
         with open(self.config_path) as fp:
@@ -58,6 +61,49 @@ class LocalStorage:
             self.metadb.create_tables([DataFile])
         elif self.metadb.is_closed():
             self.metadb.connect()
+
+    def hash_to_file(self, sha256):
+        """Get the data storage path to a file with this hash
+
+        :param sha256:
+        :return: Path to the stored file
+        """
+
+        return Path(self.data_path, sha256[:2], sha256[2:])
+
+
+    def store_file(self, path):
+        """
+        Store a file in the local backend.
+
+        :ivar path: The path to the file to store
+        :return:
+        """
+
+        stat = os.stat(path)
+        abspath = Path(path).resolve()
+
+        sha256 = calculate_file_sha256(path)
+
+        # see if we stored this file already
+        datapath = self.hash_to_file(sha256)
+        if not datapath.exists():
+            # Hard-link the file to the path
+            datapath.parent.mkdir(parents=True, exist_ok=True)
+            os.link(abspath, str(datapath))
+
+        # Store in the metadata DB if doesn't exist already
+        existing_entries = DataFile.select().where(
+            (
+                (DataFile.abspath == abspath) &
+                (DataFile.sha256 == sha256) &
+                (DataFile.mtime == stat.st_mtime) &
+                (DataFile.size == stat.st_size)
+            )
+        )
+
+        if existing_entries.count() == 0:
+            DataFile.create(abspath=abspath, sha256=sha256, mtime=stat.st_mtime, size=stat.st_size)
 
 
 # MetaDB tables
@@ -78,10 +124,10 @@ class DataFile(BaseModel):
     :ivar size: The size of the file
 
     """
-    abspath = CharField()
-    sha256 = CharField(max_length=70)
-    mtime = IntegerField()
-    size = IntegerField()
+    abspath = CharField(index=True)
+    sha256 = CharField(max_length=70, index=True)
+    mtime = IntegerField(index=True)
+    size = IntegerField(index=True)
 
 
 
