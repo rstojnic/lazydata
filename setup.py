@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="lazydata",
-    version="1.0.0",
+    version="1.0.1",
     author="Robert Stojnic",
     author_email="robert.stojnic@gmail.com",
     description="Scalable data dependencies",
@@ -18,15 +18,5 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
+    scripts=['lazydata/bin/lazydata']
 )
-
-# To release a new version:
-
-# 1) Package up:
-# python3 setup.py sdist bdist_wheel
-
-# 2) Make sure to have twine installed:
-# python3 -m pip install --upgrade twine
-
-# 3) An upload:
-# twine upload --repository-url  https://upload.pypi.org/legacy/ dist/*
