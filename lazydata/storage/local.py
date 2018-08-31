@@ -71,7 +71,6 @@ class LocalStorage:
 
         return Path(self.data_path, sha256[:2], sha256[2:])
 
-
     def store_file(self, path):
         """
         Store a file in the local backend.
@@ -104,6 +103,31 @@ class LocalStorage:
 
         if existing_entries.count() == 0:
             DataFile.create(abspath=abspath, sha256=sha256, mtime=stat.st_mtime, size=stat.st_size)
+
+    def check_file_changed(self, path):
+        """
+        Checks if the file changed.
+
+        Also return true if the file doesn't exist in the cache.
+
+        :param path:
+        :return: True if the file has changed
+        """
+
+        stat = os.stat(path)
+        abspath = Path(path).resolve()
+
+        existing_entries = DataFile.select().where(
+            (
+                (DataFile.abspath == abspath) &
+                (DataFile.mtime == stat.st_mtime) &
+                (DataFile.size == stat.st_size)
+            )
+        )
+
+        # File has changed if it's not in the metadb
+        return existing_entries.count() == 0
+
 
 
 # MetaDB tables
