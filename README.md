@@ -40,15 +40,15 @@ This will initialise`lazydata.yml` which will hold the list of files managed by 
 
 ### Storing a file
 
-To add a file to the lazydata data store use `store("<path_to_file>")` in your code:
+To add a file to the lazydata data store use `use("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
-import lazydata as ld
+import lazydata
 
 # store the file when loading  
 import pandas as pd
-df = pd.read_csv(ld.store("data/my_big_table.csv"))
+df = pd.read_csv(lazydata.use("data/my_big_table.csv"))
 
 print("Data shape:" + df.shape)
 
@@ -125,7 +125,7 @@ Because `lazydata.yml` is tracked by git you can safely make and switch git bran
 
 ### Advanced usage
 
-You can achieve multiple data dependency scenarios by putting `lazydata.store()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `lazydata.use()` into different parts of the code:
 
 - Add to outputs of your data pipeline to store the outputs
 - Add to `__init__(self)` to store files when the object is created
@@ -134,6 +134,7 @@ You can achieve multiple data dependency scenarios by putting `lazydata.store()`
 
 ### Coming soon... 
 
+- Packaging multiple files into a portable dataset
 - Add metadata to a stored file
 - Visualise stored file provenance
 - Storing data coming from databases and APIs
