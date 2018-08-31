@@ -69,7 +69,7 @@ class BaseModel(Model):
 
 class DataFile(BaseModel):
     """
-    The model stores the mtime and inode data of the original file(s).
+    The model stores the mtime and size of the original file(s).
     This makes it easy to quickly check if the file has changed when calling use()
 
     :ivar fullpath: The full absolute path to the file when it was used
