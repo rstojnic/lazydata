@@ -61,10 +61,10 @@ def cli():
         obj.parser = parser
 
     # parse the call the appropriate function
-    args, unknown = parser.parse_known_args()
+    args, _ = parser.parse_known_args()
 
     if "func" in args:
-        args.func(args, unknown)
+        args.func(args)
     else:
         parser.print_help()
 
