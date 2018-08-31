@@ -30,13 +30,13 @@ $ pip install lazydata
 
 ### Add to your project
 
-To enable `lazydata` run in your git repository root:
+To enable `lazydata`, run in your git repository root:
 
 ```bash
 $ lazydata init 
 ```
 
-This will initialise`lazydata.yml` which will hold the list of files managed by lazydata. 
+This will initialise `lazydata.yml` which will hold the list of files managed by lazydata. 
 
 ### Storing a file
 
