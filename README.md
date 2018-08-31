@@ -54,7 +54,7 @@ print("Data shape:" + df.shape)
 
 ```
 
-Running the script will store the file:
+Running the script the first time will store the file:
 
 ```bash
 $ python my_script.py
@@ -73,7 +73,9 @@ files:
 
 Locally stored files in your lazydata cache are hard-linked, meaning that they don't take any extra space on your hard drive (unless you delete or modify the original file in which case a copy of the file is kept). 
 
-If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml file. 
+If you modify the script and re-run it with the same data file, lazydata will just efficiently check that the file hasn't been modified and will not do anything else. 
+
+If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml. 
 
 And you are done! This data file is now linked to your local repository.
 
@@ -117,8 +119,11 @@ $ lazydata pull my_script.py
 # download everything stored in this git commit
 $ lazydata pull 653ca451
 
-# download everything in HEAD
+# download everything in the current directory
 $ lazydata pull .
+
+# download the latest version of all files previous downloaded
+$ lazydata pull
 ```
 
 Because `lazydata.yml` is tracked by git you can safely make and switch git branches. 
