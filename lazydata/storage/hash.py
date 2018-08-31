@@ -2,14 +2,13 @@
 Hashing-related function
 """
 
-import sys
 import hashlib
 
 # BUF_SIZE is totally arbitrary, change for your app!
 BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
 
 
-def calculate_file_sha256(path):
+def calculate_file_sha256(path:str) -> str:
     """
     Calculate a file SHA256 by reading in the file in chunks
 
