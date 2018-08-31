@@ -132,17 +132,18 @@ Because `lazydata.yml` is tracked by git you can safely make and switch git bran
 
 You can achieve multiple data dependency scenarios by putting `lazydata.use()` into different parts of the code:
 
-- Add to outputs of your data pipeline to store the outputs
-- Add to `__init__(self)` to store files when the object is created
-- Add to `__init__.py` to store files when the python module is used
-- Add to `setup.py` to store files when a Python package is installed
+- Add to jupyter notebooks
+- Add to outputs of your data pipeline
+- Add to `__init__(self)` to add data dependencies to classes
+- Add to `__init__.py` to add data dependencies to modules
+- Add to `setup.py` to add data dependencies to packages 
 
 ### Coming soon... 
 
-- Packaging multiple files into a portable dataset
 - Add metadata to a stored file
 - Visualise stored file provenance
 - Storing data coming from databases and APIs
+- Packaging multiple files into a portable dataset
 
 ## Contributing
 
