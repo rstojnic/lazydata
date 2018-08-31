@@ -81,7 +81,7 @@ And you are done! This data file is now linked to your local repository.
 
 ### Sharing your stored files
 
-To access your stored files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a retemo storage backend run:
+To access your stored files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a remote storage backend run:
 
 ```bash
 $ lazydata add-remote s3://mybucket/lazydata
