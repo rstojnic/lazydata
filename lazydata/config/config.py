@@ -32,8 +32,11 @@ class Config:
             raise RuntimeError("Cannot find the lazydata.yml file in any of the parent directories. "
                                "Did you run `lazydata init`?")
 
-        with open(str(self.config_path)) as fp:
-            self.config = yaml.safe_load(fp)
+        try:
+            with open(str(self.config_path)) as fp:
+                self.config = yaml.safe_load(fp)
+        except Exception as e:
+            raise RuntimeError("Error parsing `lazydata.yml`. Please revert to the last working version.\n%s" % str(e))
 
         if "files" not in self.config:
             self.config["files"] = []
