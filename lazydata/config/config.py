@@ -112,6 +112,20 @@ class Config:
 
         self.save_config()
 
+    def add_remote(self, remote_url:str):
+        """
+        Add a remote to the config file
+
+        :param remote_url:
+        :return:
+        """
+
+        if "remote" in self.config:
+            print("ERROR: Remote storage backend in `lazydata.yml` already exists. Aborting...")
+        else:
+            self.config["remote"] = remote_url
+            self.save_config()
+
     def save_config(self):
         """
         Save the config file
@@ -121,4 +135,7 @@ class Config:
 
         with open(str(self.config_path), "w") as fp:
             yaml.dump({"version": self.config["version"]}, fp, default_flow_style=False)
-            yaml.dump({"files": self.config["files"]}, fp, default_flow_style=False)
+            if "remote" in self.config:
+                yaml.dump({"remote": self.config["remote"]}, fp, default_flow_style=False)
+            if "files" in self.config:
+                yaml.dump({"files": self.config["files"]}, fp, default_flow_style=False)

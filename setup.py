@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
-    install_requires=['pyyaml', "peewee", "boto3"],
+    install_requires=['pyyaml', "peewee", "boto3", "lazy-import"],
     scripts=['lazydata/bin/lazydata']
 )
