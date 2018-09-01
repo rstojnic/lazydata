@@ -71,7 +71,7 @@ class LocalStorage:
 
         return Path(self.data_path, sha256[:2], sha256[2:])
 
-    def store_file(self, path):
+    def store_file(self, path:str):
         """
         Store a file in the local backend.
 
