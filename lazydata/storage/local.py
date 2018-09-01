@@ -3,7 +3,7 @@ An abstraction layer for the local cache
 
 """
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import yaml
 import sqlite3
 import os
@@ -70,6 +70,15 @@ class LocalStorage:
         """
 
         return Path(self.data_path, sha256[:2], sha256[2:])
+
+    def hash_to_remote_path(self, sha256:str) -> PurePosixPath:
+        """Get the remote path (in posix format)
+
+        :param sha256:
+        :return: Path to the stored file
+        """
+
+        return PurePosixPath("data", sha256[:2], sha256[2:])
 
     def store_file(self, path:str):
         """
