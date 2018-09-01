@@ -90,6 +90,28 @@ class Config:
 
         self.save_config()
 
+    def add_usage(self, entry:dict, script_path:str):
+        """
+        Make sure the usage string is present in the usage.
+
+        This function modifies the `entry` input parameter and only has side-effects.
+
+        :param entry: The dict with the config file entry that needs to be modified
+        :param script_path: The location where the file was used
+        :return:
+        """
+
+        script_path_rel = str(self.path_relative_to_config(script_path))
+
+        if isinstance(entry["usage"], list):
+            usage_set = set(entry["usage"])
+            if script_path_rel not in usage_set:
+                entry["usage"].append(script_path_rel)
+        elif entry["usage"] != script_path_rel:
+            entry["usage"] = [entry["usage"], script_path_rel]
+
+        self.save_config()
+
     def save_config(self):
         """
         Save the config file
