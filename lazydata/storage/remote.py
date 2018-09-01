@@ -2,16 +2,13 @@
 Remote storage backend implementation
 
 """
-
 import lazy_import
-from boto3.s3.transfer import S3Transfer
 from pathlib import PurePosixPath
 
 import os, threading, sys
 
-from botocore.exceptions import ClientError
-
 from lazydata.config.config import Config
+from lazydata.storage.hash import calculate_file_sha256
 from lazydata.storage.local import LocalStorage
 
 boto3 = lazy_import.lazy_module("boto3")
@@ -103,7 +100,7 @@ class AWSRemoteStorage(RemoteStorage):
         return exists
 
     def upload(self, local: LocalStorage, config: Config):
-        transfer = S3Transfer(self.client)
+        transfer = boto3.s3.transfer.S3Transfer(self.client)
 
         # look for all hashes in the config file and upload
         all_sha256 = [e["hash"] for e in config.config["files"]]
@@ -112,11 +109,12 @@ class AWSRemoteStorage(RemoteStorage):
             local_path = local.hash_to_file(sha256)
             remote_path = local.hash_to_remote_path(sha256)
             s3_key = str(PurePosixPath(self.path_prefix, remote_path))
+            s3_success_key = "%s.completed" % s3_key
 
             # check if the remote location already exists
             exists = True
             try:
-                self.client.head_object(Bucket=self.bucket_name, Key=s3_key)
+                self.client.head_object(Bucket=self.bucket_name, Key=s3_success_key)
             except botocore.exceptions.ClientError as e:
                 error_code = int(e.response['Error']['Code'])
                 if error_code == 404:
@@ -128,8 +126,12 @@ class AWSRemoteStorage(RemoteStorage):
                                      s3_key,
                                      callback=S3ProgressPercentage(str(local_path)))
 
+                # Upload the success key, to verify that the upload has completed
+                self.s3.Bucket(self.bucket_name).put_object(Key=s3_success_key, Body="")
+
+
     def download_to_local(self, local: LocalStorage, sha256: str):
-        transfer = S3Transfer(self.client)
+        transfer = boto3.s3.transfer.S3Transfer(self.client)
 
         local_path = local.hash_to_file(sha256)
         remote_path = local.hash_to_remote_path(sha256)
@@ -138,6 +140,11 @@ class AWSRemoteStorage(RemoteStorage):
         local_path.parent.mkdir(parents=True, exist_ok=True)
 
         transfer.download_file(self.bucket_name, s3_key, str(local_path))
+
+        # make sure the sha256 of the just downloaded file is correct
+        downloaded_sha256 = calculate_file_sha256(str(local_path))
+        if sha256 != downloaded_sha256:
+            raise RuntimeError("Hash for the downloaded file `%s` is incorrect. File might be corrupted in the remote storage backend." % str(local_path))
 
 
 class S3ProgressPercentage:
