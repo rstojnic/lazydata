@@ -125,7 +125,7 @@ $ lazydata pull
 
 Because `lazydata.yml` is tracked by git you can safely make and switch git branches. 
 
-### Advanced usage
+### Data dependency scenarios
 
 You can achieve multiple data dependency scenarios by putting `lazydata.track()` into different parts of the code:
 
