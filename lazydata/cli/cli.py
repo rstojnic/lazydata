@@ -44,11 +44,11 @@ def cli():
             "handler": RemoveRemoteCommand(),
             "help": "Remove a remote storage backend"
         },
-        {
-            "command": "config-remote",
-            "handler": ConfigRemoteCommand(),
-            "help": "Configure access credentials for a remote storage backend"
-        },
+        # {
+        #     "command": "config-remote",
+        #     "handler": ConfigRemoteCommand(),
+        #     "help": "Configure access credentials for a remote storage backend"
+        # },
         {
             "command": "status",
             "handler": StatusCommand(),
