@@ -5,12 +5,11 @@ An abstraction layer for the local cache
 
 from pathlib import Path, PurePosixPath
 import yaml
-import sqlite3
 import os
+import stat
 
 from peewee import SqliteDatabase, Model, CharField, IntegerField
 
-from lazydata.config.config import Config
 from lazydata.storage.hash import calculate_file_sha256
 
 BASE_PATH = Path(Path.home(), ".lazydata").resolve()
@@ -149,13 +148,28 @@ class LocalStorage:
         """
 
         cached_path = self.hash_to_file(sha256)
+        path_obj = Path(path)
 
         if cached_path.exists():
+            if path_obj.exists():
+                if is_same_hard_link(str(cached_path), path):
+                    # nothing to do, already linked
+                    return True
+                else:
+                    # delete the old file as we'll need to overwrite it
+                    path_obj.unlink()
+
             os.link(str(cached_path), path)
             return True
         else:
             return False
 
+
+def is_same_hard_link(filename:str, other:str):
+    s1 = os.stat(filename)
+    s2 = os.stat(other)
+    return (s1[stat.ST_INO], s1[stat.ST_DEV]) == \
+        (s2[stat.ST_INO], s2[stat.ST_DEV])
 
 # MetaDB tables
 

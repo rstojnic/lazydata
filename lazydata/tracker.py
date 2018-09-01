@@ -2,25 +2,11 @@ from pathlib import Path
 import traceback
 
 from lazydata.config.config import Config
+from lazydata.storage.fetch_file import fetch_file
 from lazydata.storage.hash import calculate_file_sha256
 from lazydata.storage.local import LocalStorage
 from lazydata.storage.remote import RemoteStorage
 
-
-def remote_download_and_copy(config:Config, local:LocalStorage, sha256:str, path:str):
-    """
-    Trigger remote download, and copy over the file to the working copy
-
-    :param config:
-    :param local:
-    :param sha256:
-    :param path:
-    :return:
-    """
-    remote = RemoteStorage.get_from_config(config)
-    remote.download_to_local(local, sha256)
-
-    local.copy_file_to(sha256, path)
 
 def track(path:str) -> str:
     """
@@ -75,10 +61,7 @@ def track(path:str) -> str:
         matching_old = [e for e in older if e["hash"] in cached_sha256]
         if matching_old:
             print("LAZYDATA: Detected an old version of `%s`, updating to the latest..." % path)
-            local_copy_success = local.copy_file_to(latest["hash"], path)
-            if not local_copy_success:
-                remote_download_and_copy(config, local, latest["hash"], path)
-
+            fetch_file(config, local, latest["hash"], path)
             # make sure usage is recorded
             config.add_usage(latest, script_location)
         else:
@@ -102,10 +85,7 @@ def track(path:str) -> str:
         # CASE: Remote download
         print("LAZYDATA: Downloading tracked file `%s`..." % path)
         local = LocalStorage()
-        local_copy_success = local.copy_file_to(latest["hash"], path)
-        if not local_copy_success:
-            remote_download_and_copy(config, local, latest["hash"], path)
-
+        fetch_file(config, local, latest["hash"], path)
         # make sure usage is recorded
         config.add_usage(latest, script_location)
     elif not path_exists and not latest:

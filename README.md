@@ -116,10 +116,7 @@ $ lazydata pull my_big_table.csv
 # download everything used in this script
 $ lazydata pull my_script.py
 
-# download everything added in this git commit
-$ lazydata pull 653ca451
-
-# download everything stored in the current directory
+# download everything stored in the current directory and subdirectories
 $ lazydata pull .
 
 # download the latest version of all files previous downloaded

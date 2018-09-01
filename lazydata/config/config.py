@@ -50,6 +50,15 @@ class Config:
         """
         return Path(path).resolve().relative_to(self.config_path.parent)
 
+    def abs_path(self, path_relative_to_config:str) -> Path:
+        """
+        Return the absolute path of a file that is defined as being relative to config
+
+        :param path_relative_to_config:
+        :return:
+        """
+        return Path(self.config_path.parent, path_relative_to_config).resolve()
+
     def get_latest_and_all_file_entries(self, path:str):
         """
         Get the latest and all other versions of the file entry for a path
@@ -126,6 +135,40 @@ class Config:
             self.config["remote"] = remote_url
             self.save_config()
 
+    def check_file_tracked(self, path:str):
+        """
+        Checks if the file is tracked in the config file
+
+        :return:
+        """
+        latest, _ = self.get_latest_and_all_file_entries(path)
+
+        return latest is not None
+
+    def tracked_files_used_in(self, script_path:str):
+        """
+        See if there are any tracked files used by this script
+
+        :param script_path:
+        :return:
+        """
+        script_path_rel = str(self.path_relative_to_config(script_path))
+
+        entries = [e for e in self.config["files"] if usage_filter(e["usage"], script_path_rel)]
+
+        return entries
+
+    def abs_path_matches_prefix(self, abspath_prefix:str):
+        """
+        Select those tracked files that match an absolute path prefix
+
+        :param abspath_prefix:
+        :return:
+        """
+        entries = [e for e in self.config["files"] if str(self.abs_path(e["path"])).startswith(abspath_prefix)]
+
+        return entries
+
     def save_config(self):
         """
         Save the config file
@@ -139,3 +182,10 @@ class Config:
                 yaml.dump({"remote": self.config["remote"]}, fp, default_flow_style=False)
             if "files" in self.config:
                 yaml.dump({"files": self.config["files"]}, fp, default_flow_style=False)
+
+
+def usage_filter(usage, script_path):
+    if isinstance(usage, list):
+        return script_path in usage
+    else:
+        return script_path == usage
