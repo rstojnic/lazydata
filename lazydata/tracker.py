@@ -53,7 +53,7 @@ def track(path:str) -> str:
             path_sha256 = calculate_file_sha256(path)
 
             if latest["hash"] != path_sha256:
-                print("LAZYDATA: Tracked file `%s` changed, recording the new version." % path)
+                print("LAZYDATA: Tracked file `%s` changed, recording a new version..." % path)
                 local.store_file(path)
                 config.add_file_entry(path, "")
             else:

@@ -1,3 +1,4 @@
+from .tracker import track
+
 name = "lazydata"
 
-from .tracker import track
