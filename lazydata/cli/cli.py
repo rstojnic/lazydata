@@ -39,11 +39,11 @@ def cli():
             "handler": AddRemoteCommand(),
             "help": "Add a remote storage backend"
         },
-        {
-            "command": "remove-remote",
-            "handler": RemoveRemoteCommand(),
-            "help": "Remove a remote storage backend"
-        },
+        # {
+        #     "command": "remove-remote",
+        #     "handler": RemoveRemoteCommand(),
+        #     "help": "Remove a remote storage backend"
+        # },
         # {
         #     "command": "config-remote",
         #     "handler": ConfigRemoteCommand(),
