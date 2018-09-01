@@ -6,6 +6,7 @@ from lazydata.cli.commands.push import PushCommand
 from lazydata.cli.commands.status import StatusCommand
 from lazydata.cli.commands.addremote import AddRemoteCommand
 from lazydata.cli.commands.removeremote import RemoveRemoteCommand
+from lazydata.cli.commands.configremote import ConfigRemoteCommand
 
 def cli():
     """
@@ -42,6 +43,11 @@ def cli():
             "command": "remove-remote",
             "handler": RemoveRemoteCommand(),
             "help": "Remove a remote storage backend"
+        },
+        {
+            "command": "config-remote",
+            "handler": ConfigRemoteCommand(),
+            "help": "Configure access credentials for a remote storage backend"
         },
         {
             "command": "status",
