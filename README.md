@@ -40,29 +40,29 @@ This will initialise `lazydata.yml` which will hold the list of files managed by
 
 ### Storing a file
 
-To add a file to the lazydata data store use `use("<path_to_file>")` in your code:
+To add a file to the lazydata data store use `track("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
-import lazydata
+from lazydata import track
 
 # store the file when loading  
 import pandas as pd
-df = pd.read_csv(lazydata.use("data/my_big_table.csv"))
+df = pd.read_csv(track("data/my_big_table.csv"))
 
 print("Data shape:" + df.shape)
 
 ```
 
-Running the script the first time will store the file:
+Running the script the first time will start tracking the file:
 
 ```bash
 $ python my_script.py
-## lazydata: Storing a new file data/my_big_table.csv
+## lazydata: Tracking a new file data/my_big_table.csv
 ## Data shape: (10000,100)
 ```
 
-The file has now been stored in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
+The file is now tracked and has been backed-up in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
 ```yaml
 files:
   - path: data/my_big_table.csv
@@ -79,9 +79,9 @@ If you modify the data file and re-run the script, this will add another entry t
 
 And you are done! This data file is now linked to your local repository.
 
-### Sharing your stored files
+### Sharing your tracked files
 
-To access your stored files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a remote storage backend run:
+To access your tracked files from multiple machines add a remote storage backend where they can be uploaded. To use S3 as a remote storage backend run:
 
 ```bash
 $ lazydata add-remote s3://mybucket/lazydata
@@ -130,18 +130,18 @@ Because `lazydata.yml` is tracked by git you can safely make and switch git bran
 
 ### Advanced usage
 
-You can achieve multiple data dependency scenarios by putting `lazydata.use()` into different parts of the code:
+You can achieve multiple data dependency scenarios by putting `lazydata.track()` into different parts of the code:
 
-- Add to jupyter notebooks
-- Add to outputs of your data pipeline
-- Add to `__init__(self)` to add data dependencies to classes
-- Add to `__init__.py` to add data dependencies to modules
-- Add to `setup.py` to add data dependencies to packages 
+- Jupyter notebook data dependencies by using tracking in notebooks
+- Pipeline output tracking by tracking saved files 
+- Class-level data dependencies by tracking files in `__init__(self)`
+- Module-level data dependencies by tracking files in `__init__.py`
+- Package-level data dependencies by tracking files in `setup.py` 
 
 ### Coming soon... 
 
 - Add metadata to a stored file
-- Visualise stored file provenance
+- Visualise stored file provenance and properties
 - Storing data coming from databases and APIs
 - Packaging multiple files into a portable dataset
 
