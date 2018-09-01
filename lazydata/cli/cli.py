@@ -3,7 +3,7 @@ import argparse
 from lazydata.cli.commands.init import InitCommand
 from lazydata.cli.commands.pull import PullCommand
 from lazydata.cli.commands.push import PushCommand
-from lazydata.cli.commands.status import StatusCommand
+from lazydata.cli.commands.ls import LsCommand
 from lazydata.cli.commands.addremote import AddRemoteCommand
 from lazydata.cli.commands.removeremote import RemoveRemoteCommand
 from lazydata.cli.commands.configremote import ConfigRemoteCommand
@@ -50,9 +50,9 @@ def cli():
         #     "help": "Configure access credentials for a remote storage backend"
         # },
         {
-            "command": "status",
-            "handler": StatusCommand(),
-            "help": "Status of currently downloaded files"
+            "command": "ls",
+            "handler": LsCommand(),
+            "help": "List tracked files and their current status"
         },
 
     ]

@@ -1,5 +1,5 @@
 from lazydata.cli.commands.BaseCommand import BaseCommand
 
 
-class StatusCommand(BaseCommand):
+class LsCommand(BaseCommand):
     pass
