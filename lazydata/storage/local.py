@@ -10,6 +10,7 @@ import os
 
 from peewee import SqliteDatabase, Model, CharField, IntegerField
 
+from lazydata.config.config import Config
 from lazydata.storage.hash import calculate_file_sha256
 
 BASE_PATH = Path(Path.home(), ".lazydata").resolve()
@@ -135,24 +136,25 @@ class LocalStorage:
         sha256 = [e.sha256 for e in existing_entries]
         return sha256
 
-    def copy_file_to(self, sha256:str, path:str):
+    def copy_file_to(self, sha256:str, path:str) -> bool:
         """
         Copy the file from local cache to user's local copy.
 
-        If the file is not available locally, it will trigger a remote storage download.
+        If the file is not available locally it will return False, otherwise return True if successful
 
+        :param config: The project config used to get the remote if the files needs downloading
         :param sha256: The sha256 of the file we need
         :param path: The path where it should be copied
-        :return:
+        :return: Returns
         """
 
         cached_path = self.hash_to_file(sha256)
 
         if cached_path.exists():
             os.link(str(cached_path), path)
+            return True
         else:
-            # @TODO: trigger remote storage download
-            raise RuntimeError("File not cached locally.")
+            return False
 
 
 # MetaDB tables

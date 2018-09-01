@@ -61,6 +61,17 @@ class RemoteStorage:
         raise NotImplementedError("Not implemented for this storage backend.")
 
 
+    def download_to_local(self, local:LocalStorage, sha256:str):
+        """
+        Download a file with a specific SHA256 and save it into path
+
+        :param local:
+        :param sha256:
+        :return:
+        """
+        raise NotImplementedError("Not implemented for this storage backend.")
+
+
 class AWSRemoteStorage(RemoteStorage):
 
     def __init__(self, remote_url):
@@ -116,6 +127,17 @@ class AWSRemoteStorage(RemoteStorage):
                                      self.bucket_name,
                                      s3_key,
                                      callback=S3ProgressPercentage(str(local_path)))
+
+    def download_to_local(self, local: LocalStorage, sha256: str):
+        transfer = S3Transfer(self.client)
+
+        local_path = local.hash_to_file(sha256)
+        remote_path = local.hash_to_remote_path(sha256)
+        s3_key = str(PurePosixPath(self.path_prefix, remote_path))
+
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+
+        transfer.download_file(self.bucket_name, s3_key, str(local_path))
 
 
 class S3ProgressPercentage:
