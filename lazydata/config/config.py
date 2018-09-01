@@ -50,12 +50,12 @@ class Config:
         """
         return Path(path).resolve().relative_to(self.config_path.parent)
 
-    def get_latest_file_entry(self, path:str):
+    def get_latest_and_all_file_entries(self, path:str):
         """
-        Get the latest version of the file entry for a path
+        Get the latest and all other versions of the file entry for a path
 
         :param path:
-        :return: None if no entry found, otherwise the dictionary with the latest entry
+        :return: tuple: None, None if nothing found, otherwise <latest>,<older>
         """
 
         # path relative to the config file
@@ -64,9 +64,9 @@ class Config:
         all_entries = [f for f in self.config["files"] if f["path"] == path_rel]
 
         if len(all_entries) == 0:
-            return None
+            return None, None
         else:
-            return all_entries[-1]
+            return all_entries[-1], all_entries[:-1]
 
     def add_file_entry(self, path:str, script_path:str):
         """

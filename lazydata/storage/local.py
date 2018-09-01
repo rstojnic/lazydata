@@ -62,7 +62,7 @@ class LocalStorage:
         elif self.metadb.is_closed():
             self.metadb.connect()
 
-    def hash_to_file(self, sha256):
+    def hash_to_file(self, sha256:str) -> Path:
         """Get the data storage path to a file with this hash
 
         :param sha256:
@@ -104,14 +104,12 @@ class LocalStorage:
         if existing_entries.count() == 0:
             DataFile.create(abspath=abspath, sha256=sha256, mtime=stat.st_mtime, size=stat.st_size)
 
-    def check_file_changed(self, path):
+    def get_file_sha256(self, path:str) -> list:
         """
-        Checks if the file changed.
-
-        Also return true if the file doesn't exist in the cache.
+        Checks if the file has a stored sha256 value
 
         :param path:
-        :return: True if the file has changed
+        :return: A list of sha256 strings
         """
 
         stat = os.stat(path)
@@ -125,9 +123,27 @@ class LocalStorage:
             )
         )
 
-        # File has changed if it's not in the metadb
-        return existing_entries.count() == 0
+        sha256 = [e.sha256 for e in existing_entries]
+        return sha256
 
+    def copy_file_to(self, sha256:str, path:str):
+        """
+        Copy the file from local cache to user's local copy.
+
+        If the file is not available locally, it will trigger a remote storage download.
+
+        :param sha256: The sha256 of the file we need
+        :param path: The path where it should be copied
+        :return:
+        """
+
+        cached_path = self.hash_to_file(sha256)
+
+        if cached_path.exists():
+            os.link(str(cached_path), path)
+        else:
+            # @TODO: trigger remote storage download
+            raise RuntimeError("File not cached locally.")
 
 
 # MetaDB tables
