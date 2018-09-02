@@ -23,8 +23,8 @@ def track(path:str) -> str:
         script_location = stack[-2].filename
 
     # remove the ipython hash because it's going to be changing all the time
-    if script_location.startswith("<ipython-input"):
-        script_location = "<ipython-input>"
+    if script_location.startswith("<ipython-input") or script_location.startswith("<stdin"):
+        script_location = ""
 
     path_obj = Path(path)
 
