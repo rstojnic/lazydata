@@ -140,6 +140,7 @@ You can achieve multiple data dependency scenarios by putting `lazydata.track()`
 - Visualise stored file provenance and properties
 - Faceting multiple files into portable datasets
 - Storing data coming from databases and APIs
+- More remote storage options
 
 ## Contributing
 
