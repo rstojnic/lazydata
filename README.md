@@ -130,7 +130,7 @@ Because `lazydata.yml` is tracked by git you can safely make and switch git bran
 You can achieve multiple data dependency scenarios by putting `lazydata.track()` into different parts of the code:
 
 - Jupyter notebook data dependencies by using tracking in notebooks
-- Pipeline output tracking by tracking saved files 
+- Data pipeline output tracking by tracking saved files 
 - Class-level data dependencies by tracking files in `__init__(self)`
 - Module-level data dependencies by tracking files in `__init__.py`
 - Package-level data dependencies by tracking files in `setup.py` 
