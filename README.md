@@ -93,7 +93,7 @@ To access your tracked files from multiple machines add a remote storage backend
 $ lazydata add-remote s3://mybucket/lazydata
 ```
 
-This will configure the S3 backend and also add it to `lazydata.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a remote storage backend.
+This will configure the S3 backend and also add it to `lazydata.yml` for future reference. 
 
 You can now git commit and push your `my_script.py` and `lazydata.yml` files as you normally would. 
  
