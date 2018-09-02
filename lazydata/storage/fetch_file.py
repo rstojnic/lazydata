@@ -19,6 +19,6 @@ def fetch_file(config:Config, local:LocalStorage, sha256:str, path:str):
     local_copy_success = local.copy_file_to(sha256, path)
     if not local_copy_success:
         remote = RemoteStorage.get_from_config(config)
-        remote.download_to_local(local, sha256)
+        remote.download_to_local(config, local, sha256)
 
         local.copy_file_to(sha256, path)
