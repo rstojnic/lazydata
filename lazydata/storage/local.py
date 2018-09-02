@@ -12,7 +12,7 @@ from peewee import SqliteDatabase, Model, CharField, IntegerField
 
 from lazydata.storage.hash import calculate_file_sha256
 
-BASE_PATH = Path(Path.home(), ".lazydata").resolve()
+BASE_PATH = Path(Path.home().resolve(), ".lazydata")
 METADB_PATH = Path(BASE_PATH, "metadb.sqlite3")
 
 db = SqliteDatabase(str(METADB_PATH))
