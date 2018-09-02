@@ -43,6 +43,7 @@ jobs:
       - run:
           name: build latest library version
           command: |
+            . venv/bin/activate
             pip install -e .
 
       - store_artifacts:
