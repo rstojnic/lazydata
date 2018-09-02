@@ -1,0 +1,4 @@
+pyyaml>=3.13
+peewee>=3.6.4
+boto3>=1.8.6
+lazy-import>=0.2.2
