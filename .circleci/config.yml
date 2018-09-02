@@ -33,7 +33,8 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-
+            pip install pytest
+            pip install pytest-cov
       - save_cache:
           paths:
             - ./venv
@@ -45,6 +46,12 @@ jobs:
           command: |
             . venv/bin/activate
             pip install -e .
+
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
+            py.test --cov=lazydata
 
       - store_artifacts:
           path: test-reports
