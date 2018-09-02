@@ -39,15 +39,18 @@ class PullCommand(BaseCommand):
                     continue
 
                 # 3) check for a directory
+                dir_path = None
                 try:
+                    # might fail on python 3.5...
                     dir_path = Path(artefact).resolve()
-                    if dir_path.exists() and dir_path.is_dir():
-                        dir_entries = config.abs_path_matches_prefix(str(dir_path))
-                        if dir_entries:
-                            for e in dir_entries:
-                                file_abs_path = config.abs_path(e["path"])
-                                fetch_file(config, local, e["hash"], str(file_abs_path))
-
-                        continue
                 except Exception:
                     pass
+                if dir_path and dir_path.exists() and dir_path.is_dir():
+                    dir_entries = config.abs_path_matches_prefix(str(dir_path))
+                    if dir_entries:
+                        for e in dir_entries:
+                            file_abs_path = config.abs_path(e["path"])
+                            fetch_file(config, local, e["hash"], str(file_abs_path))
+
+                    continue
+

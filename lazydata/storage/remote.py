@@ -141,20 +141,23 @@ class AWSRemoteStorage(RemoteStorage):
 
 
     def download_to_local(self, local: LocalStorage, sha256: str):
-        transfer = boto3.s3.transfer.S3Transfer(self.client)
+        try:
+            transfer = boto3.s3.transfer.S3Transfer(self.client)
 
-        local_path = local.hash_to_file(sha256)
-        remote_path = local.hash_to_remote_path(sha256)
-        s3_key = str(PurePosixPath(self.path_prefix, remote_path))
+            local_path = local.hash_to_file(sha256)
+            remote_path = local.hash_to_remote_path(sha256)
+            s3_key = str(PurePosixPath(self.path_prefix, remote_path))
 
-        local_path.parent.mkdir(parents=True, exist_ok=True)
+            local_path.parent.mkdir(parents=True, exist_ok=True)
 
-        transfer.download_file(self.bucket_name, s3_key, str(local_path))
+            transfer.download_file(self.bucket_name, s3_key, str(local_path))
 
-        # make sure the sha256 of the just downloaded file is correct
-        downloaded_sha256 = calculate_file_sha256(str(local_path))
-        if sha256 != downloaded_sha256:
-            raise RuntimeError("Hash for the downloaded file `%s` is incorrect. File might be corrupted in the remote storage backend." % str(local_path))
+            # make sure the sha256 of the just downloaded file is correct
+            downloaded_sha256 = calculate_file_sha256(str(local_path))
+            if sha256 != downloaded_sha256:
+                raise RuntimeError("Hash for the downloaded file `%s` is incorrect. File might be corrupted in the remote storage backend." % str(local_path))
+        except botocore.exceptions.NoCredentialsError:
+            raise RuntimeError("Download failed. AWS credentials not found. Run `lazydata config aws` to configure them.")
 
 
 class S3ProgressPercentage:
