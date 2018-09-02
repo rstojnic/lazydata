@@ -34,7 +34,7 @@ $ pip install lazydata
 
 ### Add to your project
 
-To enable `lazydata`, run in your git repository root:
+To enable `lazydata`, run in project root:
 
 ```bash
 $ lazydata init 
@@ -42,9 +42,9 @@ $ lazydata init
 
 This will initialise `lazydata.yml` which will hold the list of files managed by lazydata. 
 
-### Storing a file
+### Tracking a file
 
-To add a file to the lazydata data store use `track("<path_to_file>")` in your code:
+To start tracking a file use `track("<path_to_file>")` in your code:
 
 **my_script.py**
 ```python
@@ -81,7 +81,7 @@ If you re-run the script without modifying the data file, lazydata will just qui
 
 If you modify the data file and re-run the script, this will add another entry to the yml file with the new hash of the data file, i.e. data files are automatically versioned. If you don't want to keep past versions, simply remove them from the yml. 
 
-And you are done! This data file is now linked to your local repository.
+And you are done! This data file is now tracked and linked to your local repository.
 
 ### Sharing your tracked files
 
@@ -93,7 +93,7 @@ $ lazydata add-remote s3://mybucket/lazydata
 
 This will configure the S3 backend and also add it to `lazydata.yml` for future reference. Alternatively, you can also use `ssh://username@myserver/path` as a remote storage backend.
 
-You can now git commit and push your  `my_script.py` and `lazydata.yml` files as you normally would. 
+You can now git commit and push your `my_script.py` and `lazydata.yml` files as you normally would. 
  
 To copy the stored data files to S3 use:
 
@@ -103,14 +103,14 @@ $ lazydata push
 
 When your collaborator pulls the latest version of the git repository, they will get the script and the `lazydata.yml` file as usual.  
 
-Data files will be downloaded when your collaborator runs `my_script.py` and the `lazydata("my_big_table.csv")` is executed:
+Data files will be downloaded when your collaborator runs `my_script.py` and the `track("my_big_table.csv")` is executed:
 
 ```bash
 $ python my_script.py
 ## lazydata: Downloading stored file my_big_table.csv ...
 ## Data shape: (10000,100)
 ``` 
-
+ 
 To get the data files without running the code, you can also use the command line utility:
 
 ```bash
@@ -120,10 +120,10 @@ $ lazydata pull my_big_table.csv
 # download everything used in this script
 $ lazydata pull my_script.py
 
-# download everything stored in the current directory and subdirectories
-$ lazydata pull .
+# download everything stored in the data/ directory and subdirs
+$ lazydata pull data/
 
-# download the latest version of all files previous downloaded
+# download the latest version of all data files
 $ lazydata pull
 ```
 
