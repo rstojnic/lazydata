@@ -17,7 +17,7 @@
 `lazydata` is primarily designed for machine learning and data science project.  
 
 <div align="center">
-<img width="520" src="docs/lazydata-project-col2.png">
+<img width="520" src="https://github.com/rstojnic/lazydata/raw/master/docs/lazydata-project-col2.png">
 </div>
 
 ## Getting started 
