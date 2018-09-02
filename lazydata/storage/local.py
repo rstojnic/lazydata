@@ -158,6 +158,9 @@ class LocalStorage:
                 else:
                     # delete the old file as we'll need to overwrite it
                     path_obj.unlink()
+            else:
+                # we might need to make some directories to pull the file... 
+                path_obj.parent.mkdir(parents=True, exist_ok=True)
 
             os.link(str(cached_path), path)
             return True
