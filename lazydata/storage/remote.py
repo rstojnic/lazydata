@@ -111,6 +111,14 @@ class AWSRemoteStorage(RemoteStorage):
             s3_key = str(PurePosixPath(self.path_prefix, remote_path))
             s3_success_key = "%s.completed" % s3_key
 
+            # get the filename the user would recognise
+            real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+            if len(real_path) > 0:
+                real_path = real_path[-1]
+            else:
+                # file no longer in config? this shouldn't happen but don't fail.
+                real_path = ""
+
             # check if the remote location already exists
             exists = True
             try:
@@ -124,10 +132,12 @@ class AWSRemoteStorage(RemoteStorage):
                 transfer.upload_file(str(local_path),
                                      self.bucket_name,
                                      s3_key,
-                                     callback=S3ProgressPercentage(str(local_path)))
+                                     callback=S3ProgressPercentage(str(local_path), real_path))
 
                 # Upload the success key, to verify that the upload has completed
                 self.s3.Bucket(self.bucket_name).put_object(Key=s3_success_key, Body="")
+        # Final newline to flush the progress indicator
+        print()
 
 
     def download_to_local(self, local: LocalStorage, sha256: str):
@@ -148,18 +158,19 @@ class AWSRemoteStorage(RemoteStorage):
 
 
 class S3ProgressPercentage:
-    def __init__(self, filename):
+    def __init__(self, filename, real_filename):
         self._filename = filename
         self._size = float(os.path.getsize(filename))
         self._seen_so_far = 0
         self._lock = threading.Lock()
+        self._real_filename = real_filename
 
     def __call__(self, bytes_amount):
         with self._lock:
             self._seen_so_far += bytes_amount
             percentage = (self._seen_so_far / self._size) * 100
             sys.stdout.write(
-                "\r Uploading %s  %s / %s  (%.2f%%)" % (
-                    self._filename, self._seen_so_far, self._size,
+                "\r Uploading `%s`  %s / %s  (%.2f%%)" % (
+                    self._real_filename, self._seen_so_far, self._size,
                     percentage))
             sys.stdout.flush()
