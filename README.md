@@ -2,11 +2,6 @@
 
 `lazydata` is a minimalist library for including data dependencies into Python projects. 
 
-<div align="center">
-<img width="500" src="docs/lazydata-graph.png">
-</div>
-<br><br>
-
 **Problem**: Keeping all data files in git (e.g. via git-lfs) results in a bloated repository copy that takes ages to pull.   
 
 **Solution**: `lazydata` only stores references to data files in git, and syncs data files on-demand when they are needed.
@@ -20,6 +15,11 @@
 - Choose your own remote storage backend: AWS S3 or (coming soon:) directory over SSH
 
 `lazydata` is primarily designed for machine learning and data science project.  
+
+<div align="center">
+<img width="600" src="docs/lazydata-graph.png">
+</div>
+<br><br>
 
 ## Getting started 
 
