@@ -42,7 +42,7 @@ class LocalStorage:
             self.base_path.mkdir()
 
             # write a stub config file
-            with open(self.config_path, "w") as fp:
+            with open(str(self.config_path), "w") as fp:
                 fp.write("version: 1\n")
 
         # make sure the datafile store exists
@@ -50,7 +50,7 @@ class LocalStorage:
             self.data_path.mkdir()
 
         # Load in the config file
-        with open(self.config_path) as fp:
+        with open(str(self.config_path)) as fp:
             self.config = yaml.load(fp)
 
         self.metadb = db
