@@ -1,6 +1,6 @@
-# lazydata: scalable data dependencies
-
 [![CircleCI](https://circleci.com/gh/rstojnic/lazydata/tree/master.svg?style=shield)](https://circleci.com/gh/rstojnic/lazydata/tree/master)
+
+# lazydata: scalable data dependencies
 
 `lazydata` is a minimalist library for including data dependencies into Python projects. 
 
