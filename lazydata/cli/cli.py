@@ -6,7 +6,7 @@ from lazydata.cli.commands.push import PushCommand
 from lazydata.cli.commands.ls import LsCommand
 from lazydata.cli.commands.addremote import AddRemoteCommand
 from lazydata.cli.commands.removeremote import RemoveRemoteCommand
-from lazydata.cli.commands.configremote import ConfigRemoteCommand
+from lazydata.cli.commands.config import ConfigCommand
 
 def cli():
     """
@@ -44,16 +44,16 @@ def cli():
         #     "handler": RemoveRemoteCommand(),
         #     "help": "Remove a remote storage backend"
         # },
-        # {
-        #     "command": "config-remote",
-        #     "handler": ConfigRemoteCommand(),
-        #     "help": "Configure access credentials for a remote storage backend"
-        # },
         {
-            "command": "ls",
-            "handler": LsCommand(),
-            "help": "List tracked files and their current status"
+             "command": "config",
+             "handler": ConfigCommand(),
+             "help": "Configure access credentials for remote storage backends"
         },
+        # {
+        #     "command": "ls",
+        #     "handler": LsCommand(),
+        #     "help": "List tracked files and their current status"
+        # },
 
     ]
     subparsers = parser.add_subparsers(title="subcommands")
