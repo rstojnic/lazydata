@@ -83,7 +83,7 @@ def track(path:str) -> str:
 
     elif not path_exists and latest:
         # CASE: Remote download
-        print("LAZYDATA: Downloading tracked file `%s`..." % path)
+        print("LAZYDATA: Getting latest version of tracked file `%s`..." % path)
         local = LocalStorage()
         fetch_file(config, local, latest["hash"], path)
         # make sure usage is recorded
