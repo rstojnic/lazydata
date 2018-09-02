@@ -8,7 +8,6 @@ import yaml
 
 from lazydata.storage.hash import calculate_file_sha256
 
-
 class Config:
 
     def __init__(self, init_dir=Path.cwd()):
@@ -24,7 +23,7 @@ class Config:
         init_parents = [init_dir]
         init_parents.extend([p for p in init_dir.parents])
         for p in init_parents:
-            proposed_path = Path(p, "lazydata.yml").resolve()
+            proposed_path = Path(p.resolve(), "lazydata.yml")
             if proposed_path.exists():
                 self.config_path = proposed_path
 
@@ -57,7 +56,7 @@ class Config:
         :param path_relative_to_config:
         :return:
         """
-        return Path(self.config_path.parent, path_relative_to_config).resolve()
+        return Path(self.config_path.parent.resolve(), path_relative_to_config)
 
     def get_latest_and_all_file_entries(self, path:str):
         """
