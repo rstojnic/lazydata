@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="lazydata",
-    version="1.0.13",
+    version="1.0.14",
     author="Robert Stojnic",
     author_email="robert.stojnic@gmail.com",
     description="Scalable data dependencies",
