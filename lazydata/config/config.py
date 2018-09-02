@@ -47,7 +47,14 @@ class Config:
         :param path: file path
         :return: Path object relative to the config file
         """
-        return Path(path).resolve().relative_to(self.config_path.parent)
+        path_obj = Path(path)
+        if path_obj.exists():
+            return path_obj.resolve().relative_to(self.config_path.parent)
+        else:
+            if path_obj.is_absolute():
+                return path_obj.relative_to(self.config_path.parent)
+            else:
+                return Path(Path.cwd(), path).relative_to(self.config_path.parent)
 
     def abs_path(self, path_relative_to_config:str) -> Path:
         """
