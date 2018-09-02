@@ -1,5 +1,4 @@
 [![CircleCI](https://circleci.com/gh/rstojnic/lazydata/tree/master.svg?style=shield)](https://circleci.com/gh/rstojnic/lazydata/tree/master)
-
 [![PyPI version](https://badge.fury.io/py/lazydata.svg)](https://badge.fury.io/py/lazydata)
 
 # lazydata: scalable data dependencies
