@@ -51,8 +51,8 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            py.test --cov=lazydata
+            py.test --cov=lazydata --cov-report html --cov-report term
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: htmlcov
+          destination: htmlcov

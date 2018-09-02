@@ -4,3 +4,4 @@
 /lazydata.egg-info
 .pytest_cache
 tests/projects
+htmlcov
