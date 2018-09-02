@@ -58,10 +58,11 @@ class RemoteStorage:
         raise NotImplementedError("Not implemented for this storage backend.")
 
 
-    def download_to_local(self, local:LocalStorage, sha256:str):
+    def download_to_local(self, config:Config, local:LocalStorage, sha256:str):
         """
         Download a file with a specific SHA256 and save it into path
 
+        :param config: Config
         :param local:
         :param sha256:
         :return:
@@ -140,7 +141,7 @@ class AWSRemoteStorage(RemoteStorage):
         print()
 
 
-    def download_to_local(self, local: LocalStorage, sha256: str):
+    def download_to_local(self, config:Config, local: LocalStorage, sha256: str):
         try:
             transfer = boto3.s3.transfer.S3Transfer(self.client)
 
@@ -149,6 +150,15 @@ class AWSRemoteStorage(RemoteStorage):
             s3_key = str(PurePosixPath(self.path_prefix, remote_path))
 
             local_path.parent.mkdir(parents=True, exist_ok=True)
+
+            real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+            if len(real_path) > 0:
+                real_path = real_path[-1]
+            else:
+                # file no longer in config? this shouldn't happen but don't fail.
+                real_path = ""
+
+            print("Downloading `%s`" % real_path)
 
             transfer.download_file(self.bucket_name, s3_key, str(local_path))
 
