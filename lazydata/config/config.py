@@ -5,6 +5,7 @@ Class to read and manipulate the project's config file
 
 from pathlib import Path
 import yaml
+import os
 
 from lazydata.storage.hash import calculate_file_sha256
 
@@ -47,14 +48,8 @@ class Config:
         :param path: file path
         :return: Path object relative to the config file
         """
-        path_obj = Path(path)
-        if path_obj.exists():
-            return path_obj.resolve().relative_to(self.config_path.parent)
-        else:
-            if path_obj.is_absolute():
-                return path_obj.relative_to(self.config_path.parent)
-            else:
-                return Path(Path.cwd(), path).relative_to(self.config_path.parent)
+
+        return Path(os.path.abspath(path)).relative_to(self.config_path.parent)
 
     def abs_path(self, path_relative_to_config:str) -> Path:
         """

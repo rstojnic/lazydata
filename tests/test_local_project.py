@@ -52,6 +52,19 @@ def test_local_project():
 
     assert "Getting latest version" in out
     assert "some_data_file.txt" in out
+    assert Path("data/some_data_file.txt").exists()
+
+    # now try the relative script
+    shutil.rmtree("data/")
+    os.chdir("scripts")
+    out = os.popen("python rel_script.py").read()
+
+    os.chdir("../")
+
+    assert "Getting latest version" in out
+    assert "some_data_file.txt" in out
+    assert Path("data/some_data_file.txt").exists()
+
 
     # teardown
 
