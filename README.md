@@ -131,7 +131,7 @@ $ lazydata pull
 
 Because `lazydata.yml` is tracked by git you can safely make and switch git branches. 
 
-### Advanced data dependencies
+### Data dependency scenarios
 
 You can achieve multiple data dependency scenarios by putting `lazydata.track()` into different parts of the code:
 
@@ -147,6 +147,10 @@ You can achieve multiple data dependency scenarios by putting `lazydata.track()`
 - Faceting multiple files into portable datasets
 - Storing data coming from databases and APIs
 - More remote storage options
+
+## Stay in touch
+
+This is an early stable release. To find out about new releases subscribe to our [new releases mailing list](http://eepurl.com/dFYLIL). 
 
 ## Contributing
 
