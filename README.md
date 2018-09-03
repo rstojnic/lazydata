@@ -24,7 +24,7 @@
 
 ## Getting started 
 
-In this section we'll show how to use `lazydata` on an example project.
+In this section we'll show how to use `lazydata` on an example projects.
 
 ### Installation
 
