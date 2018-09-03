@@ -28,7 +28,7 @@ In this section we'll show how to use `lazydata` on an example project.
 
 ### Installation
 
-Install with pip:
+Install with pip (requires Python 3.5+):
 
 ```bash
 $ pip install lazydata
