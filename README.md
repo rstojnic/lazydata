@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/RJT1990/mantra/tree/master.svg?style=shield)](https://circleci.com/gh/RJT1990/mantra/tree/master)
+[![CircleCI](https://circleci.com/gh/rstojnic/lazydata/tree/master.svg?style=shield)](https://circleci.com/gh/rstojnic/lazydata/tree/master)
 
 # lazydata: scalable data dependencies
 
