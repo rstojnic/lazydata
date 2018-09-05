@@ -154,17 +154,13 @@ class LocalStorage:
 
         if cached_path.exists():
             if path_obj.exists():
-                if is_same_hard_link(str(cached_path), path):
-                    # nothing to do, already linked
-                    return True
-                else:
-                    # delete the old file as we'll need to overwrite it
-                    path_obj.unlink()
+                # delete the old file as we'll need to overwrite it
+                path_obj.unlink()
             else:
                 # we might need to make some directories to pull the file...
                 path_obj.parent.mkdir(parents=True, exist_ok=True)
 
-            os.link(str(cached_path), path)
+            shutil.copyfile(str(cached_path), str(path))
             return True
         else:
             return False
