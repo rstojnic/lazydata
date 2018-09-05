@@ -69,7 +69,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ```
 
-The file is now tracked and has been backed-up in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
+The file is now tracked and has been backed-up in your local lazydata cache in `~/.lazydata` and added to **lazydata.yml**:
 ```yaml
 files:
   - path: data/my_big_table.csv
