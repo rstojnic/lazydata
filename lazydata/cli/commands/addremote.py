@@ -12,10 +12,12 @@ class AddRemoteCommand(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('url', type=str, help='URL of the remote storage backend')
+        parser.add_argument('--endpoint-url', type=str, nargs='?', help='The complete URL to use for the constructed client')
         return parser
 
     def handle(self, args):
         url = args.url
+        endpoint_url = args.endpoint_url
 
         if not url.startswith("s3://"):
             print("ERROR: Only S3 URLs are currently supported. For example: `s3://mybucket` or `s3://mybucket/myfolder`")
@@ -23,11 +25,11 @@ class AddRemoteCommand(BaseCommand):
 
         success = False
         while not success:
-            remote = RemoteStorage.get_from_url(url)
+            remote = RemoteStorage.get_from_url(url, endpoint_url=endpoint_url)
             try:
                 if remote.check_storage_exists():
                     config = Config()
-                    config.add_remote(url)
+                    config.add_remote(url, endpoint_url=endpoint_url)
                     success = True
                 else:
                     success = True

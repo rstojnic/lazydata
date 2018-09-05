@@ -25,16 +25,16 @@ class RemoteStorage:
     """
 
     @staticmethod
-    def get_from_url(remote_url:str):
+    def get_from_url(remote_url:str, endpoint_url:str):
         if remote_url.startswith("s3://"):
-            return AWSRemoteStorage(remote_url)
+            return AWSRemoteStorage(remote_url, endpoint_url=endpoint_url)
         else:
             raise RuntimeError("Url `%s` is not supported as a remote storage backend" % remote_url)
 
     @staticmethod
     def get_from_config(config:Config):
         if "remote" in config.config:
-            return RemoteStorage.get_from_url(config.config["remote"])
+            return RemoteStorage.get_from_url(config.config["remote"], config.config["endpoint"])
         else:
             raise RuntimeError("Remote storage backend not configured for this lazydata project.")
 
@@ -72,7 +72,7 @@ class RemoteStorage:
 
 class AWSRemoteStorage(RemoteStorage):
 
-    def __init__(self, remote_url):
+    def __init__(self, remote_url, endpoint_url=None):
         if not remote_url.startswith("s3://"):
             raise RuntimeError("AWSRemoteStorage URL needs to start with s3://")
 
@@ -84,8 +84,8 @@ class AWSRemoteStorage(RemoteStorage):
         if self.path_prefix.startswith("/"):
             self.path_prefix = self.path_prefix[1:]
         # get the reusable clients and resources
-        self.s3 = boto3.resource('s3')
-        self.client = boto3.client('s3')
+        self.s3 = boto3.resource('s3', endpoint_url=endpoint_url)
+        self.client = boto3.client('s3', endpoint_url=endpoint_url)
 
     def check_storage_exists(self):
         exists = True
