@@ -16,7 +16,8 @@
 - Data consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or (coming soon:) directory over SSH
 
-`lazydata` is primarily designed for machine learning and data science projects.  
+`lazydata` is primarily designed for machine learning and data science projects. 
+See [this medium post](https://medium.com/@rstojnic/structuring-ml-projects-so-they-can-grow-b63e89c8be8f) for more.  
 
 <div align="center">
 <img width="520" src="https://github.com/rstojnic/lazydata/raw/master/docs/lazydata-project-col2.png">
