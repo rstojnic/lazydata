@@ -16,7 +16,8 @@
 - Data consistency assured using file hashes and automatic versioning
 - Choose your own remote storage backend: AWS S3 or (coming soon:) directory over SSH
 
-`lazydata` is primarily designed for machine learning and data science projects.  
+`lazydata` is primarily designed for machine learning and data science projects. 
+See [this medium post](https://medium.com/@rstojnic/structuring-ml-projects-so-they-can-grow-b63e89c8be8f) for more.  
 
 <div align="center">
 <img width="520" src="https://github.com/rstojnic/lazydata/raw/master/docs/lazydata-project-col2.png">
@@ -68,7 +69,7 @@ $ python my_script.py
 ## Data shape: (10000,100)
 ```
 
-The file is now tracked and has been backed-up in your local lazydata cache in `~/.lazydata-cache` and added to **lazydata.yml**:
+The file is now tracked and has been backed-up in your local lazydata cache in `~/.lazydata` and added to **lazydata.yml**:
 ```yaml
 files:
   - path: data/my_big_table.csv
@@ -76,8 +77,6 @@ files:
     usage: my_script.py
 
 ```
-
-Locally stored files in your lazydata cache are hard-linked, meaning that they don't take any extra space on your hard drive (unless you delete or modify the original file in which case a copy of the file is kept). 
 
 If you re-run the script without modifying the data file, lazydata will just quickly check that the data file hasn't changed and won't do anything else. 
 

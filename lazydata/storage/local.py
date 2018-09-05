@@ -11,6 +11,7 @@ import stat
 from peewee import SqliteDatabase, Model, CharField, IntegerField
 
 from lazydata.storage.hash import calculate_file_sha256
+import shutil
 
 BASE_PATH = Path(Path.home().resolve(), ".lazydata")
 METADB_PATH = Path(BASE_PATH, "metadb.sqlite3")
@@ -95,10 +96,11 @@ class LocalStorage:
 
         # see if we stored this file already
         datapath = self.hash_to_file(sha256)
-        if not datapath.exists():
-            # Hard-link the file to the path
-            datapath.parent.mkdir(parents=True, exist_ok=True)
-            os.link(str(abspath), str(datapath))
+
+        # copy over the the cache,
+        # TODO: option to hardlink
+        datapath.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(str(abspath), str(datapath))
 
         # Store in the metadata DB if doesn't exist already
         existing_entries = DataFile.select().where(
