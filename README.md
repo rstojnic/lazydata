@@ -149,7 +149,7 @@ You can achieve multiple data dependency scenarios by putting `lazydata.track()`
 
 ## Stay in touch
 
-This is an early stable release. To find out about new releases subscribe to our [new releases mailing list](http://eepurl.com/dFYLIL). 
+This is an early stable beta release. To find out about new releases subscribe to our [new releases mailing list](http://eepurl.com/dFYLIL). 
 
 ## Contributing
 
