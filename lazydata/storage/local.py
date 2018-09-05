@@ -98,7 +98,7 @@ class LocalStorage:
         if not datapath.exists():
             # Hard-link the file to the path
             datapath.parent.mkdir(parents=True, exist_ok=True)
-            os.link(abspath, str(datapath))
+            os.link(str(abspath), str(datapath))
 
         # Store in the metadata DB if doesn't exist already
         existing_entries = DataFile.select().where(
