@@ -4,6 +4,7 @@ Class to read and manipulate the project's config file
 """
 
 from pathlib import Path
+from typing import Dict, Optional, List
 import yaml
 import os
 
@@ -78,12 +79,13 @@ class Config:
         else:
             return all_entries[-1], all_entries[:-1]
 
-    def add_file_entry(self, path:str, script_path:str):
+    def add_file_entry(self, path:str, script_path:str, source_url: Optional[str] = None) -> Dict[str, str]:
         """
         Add a file entry to the config file
 
         :param path: The path to the data file
         :param script_path: The path to the script that used it
+        :param source_url: The source to download file from
         :return:
         """
         # path relative to the config file
@@ -92,13 +94,18 @@ class Config:
 
         sha256 = calculate_file_sha256(path)
 
-        self.config["files"].append({
+        result = {
             "path": path_rel,
             "hash": sha256,
             "usage": script_path_rel,
-        })
+        }
+        if source_url is not None:
+            result['source_url'] = source_url
+        self.config["files"].append(result)
 
         self.save_config()
+
+        return result
 
     def add_usage(self, entry:dict, script_path:str):
         """
@@ -113,14 +120,42 @@ class Config:
 
         script_path_rel = str(self.path_relative_to_config(script_path))
 
+        config_changed = False
+
         if isinstance(entry["usage"], list):
             usage_set = set(entry["usage"])
             if script_path_rel not in usage_set:
                 entry["usage"].append(script_path_rel)
+                config_changed = True
         elif entry["usage"] != script_path_rel:
             entry["usage"] = [entry["usage"], script_path_rel]
+            config_changed = True
 
-        self.save_config()
+        if config_changed:
+            self.save_config()
+
+    def add_source(self, entry: dict, source_url: str) -> Dict[str, str]:
+        """
+        Make sure the source string is present.
+
+        This function modifies the `entry` input parameter and only has side-effects.
+
+        :param entry: The dict with the config file entry that needs to be modified
+        :param source_url: The str with url to the source of file
+        :return:
+        """
+
+        config_changed = False
+        if "source_url" in entry:
+            if entry["source_url"] != source_url:
+                entry = self.add_file_entry(path=entry["path"], script_path=entry["usage"])
+                config_changed = True
+        else:
+            entry["source_url"] = source_url
+            config_changed = True
+        if config_changed:
+            self.save_config()
+        return entry
 
     def add_remote(self, remote_url:str, endpoint_url:str):
         """
@@ -171,6 +206,28 @@ class Config:
         entries = [e for e in self.config["files"] if str(self.abs_path(e["path"])).startswith(abspath_prefix)]
 
         return entries
+
+    def source_url(self, sha256: str) -> Optional[str]:
+        try:
+            result = [e["source_url"] for e in self.config["files"] if e["hash"] == sha256][-1]
+        except IndexError:
+            result = None
+        return result
+
+    def path(self, sha256: Optional[str] = None, source_url: Optional[str] = None) -> Optional[str]:
+        if sha256 is not None:
+            try:
+                result = [e["path"] for e in self.config["files"] if e["hash"] == sha256][-1]
+            except IndexError:
+                result = None
+        elif source_url is not None:
+            try:
+                result = [e["path"] for e in self.config["files"] if e["source_url"] == source_url][-1]
+            except IndexError:
+                result = None
+        else:
+            raise ValueError("Neither sha256 nor source_url was specified")
+        return result
 
     def save_config(self):
         """

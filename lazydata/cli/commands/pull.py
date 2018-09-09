@@ -19,7 +19,7 @@ class PullCommand(BaseCommand):
             # pull everything
             for e in config.config["files"]:
                 file_abs_path = config.abs_path(e["path"])
-                fetch_file(config, local, e["hash"], str(file_abs_path))
+                fetch_file(config=config, local=local, path=str(file_abs_path), sha256=e["hash"])
         else:
             for artefact in args.artefacts:
 
@@ -27,7 +27,7 @@ class PullCommand(BaseCommand):
                 latest, _ = config.get_latest_and_all_file_entries(artefact)
                 if latest is not None:
                     # pull the latest version of this file
-                    fetch_file(config, local, latest["hash"], artefact)
+                    fetch_file(config=config, local=local, path=artefact, sha256=latest["hash"])
                     continue
 
                 # 2) Check for usage
@@ -35,7 +35,7 @@ class PullCommand(BaseCommand):
                 if used_entries:
                     for e in used_entries:
                         file_abs_path = config.abs_path(e["path"])
-                        fetch_file(config, local, e["hash"], str(file_abs_path))
+                        fetch_file(config=config, local=local, path=str(file_abs_path), sha256=e["hash"])
                     continue
 
                 # 3) check for a directory
@@ -50,7 +50,7 @@ class PullCommand(BaseCommand):
                     if dir_entries:
                         for e in dir_entries:
                             file_abs_path = config.abs_path(e["path"])
-                            fetch_file(config, local, e["hash"], str(file_abs_path))
+                            fetch_file(config=config, local=local, path=str(file_abs_path), sha256=e["hash"])
 
                     continue
 

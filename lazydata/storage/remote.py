@@ -2,14 +2,18 @@
 Remote storage backend implementation
 
 """
+from typing import Optional
+
 import lazy_import
-from pathlib import PurePosixPath
+from pathlib import PurePosixPath, Path
 
 import os, threading, sys
 
 from lazydata.config.config import Config
 from lazydata.storage.hash import calculate_file_sha256
 from lazydata.storage.local import LocalStorage
+
+from pySmartDL import SmartDL
 
 boto3 = lazy_import.lazy_module("boto3")
 botocore = lazy_import.lazy_module("botocore")
@@ -68,6 +72,53 @@ class RemoteStorage:
         :return:
         """
         raise NotImplementedError("Not implemented for this storage backend.")
+
+
+class UrlRemoteStorage:
+    """
+    A storage backend abstraction layer
+    """
+    @staticmethod
+    def check_storage_exists():
+        return True
+
+    def upload(self, local: LocalStorage, config: Config):
+        raise NotImplementedError("Uploading to the URL remote storage is not implemented. "
+                                  "See `lazydata add-source` command.")
+
+    @staticmethod
+    def download_to_local(config: Config, local: LocalStorage, sha256: Optional[str] = None,
+                          source_url: Optional[str] = None, path: Optional[str] = None):
+        if sha256 is not None:
+            local_path = local.hash_to_file(sha256)
+            source_url = config.source_url(sha256=sha256)
+            if source_url is None:
+                raise RuntimeError("Cannot find source_url for file with hash `%s`. "
+                                   "See `lazydata add-source` command." % sha256)
+            if path is None:
+                path = config.path(sha256=sha256)
+                if path is None:
+                    raise RuntimeError("Cannot find path for downloading a file.")
+        elif source_url is not None:
+            if path is None:
+                path = config.path(source_url=source_url)
+                if path is None:
+                    raise RuntimeError("Cannot find path for downloading a file.")
+            local_path = Path(path)
+        else:
+            raise RuntimeError("Cannot download a file without sha256 and source_url specified.")
+
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+
+        f = SmartDL(urls=source_url, dest=str(local_path), progress_bar=False)
+        print("Downloading `%s`" % path)
+        f.start()
+        # make sure the sha256 of the just downloaded file is correct
+        downloaded_sha256 = calculate_file_sha256(str(local_path))
+        if sha256 is not None and sha256 != downloaded_sha256:
+            raise RuntimeError("Hash for the downloaded file `%s` is incorrect. "
+                               "File might be corrupted in the remote storage backend." % str(local_path))
+        local.store_file(path=path)
 
 
 class AWSRemoteStorage(RemoteStorage):
@@ -140,8 +191,7 @@ class AWSRemoteStorage(RemoteStorage):
         # Final newline to flush the progress indicator
         print()
 
-
-    def download_to_local(self, config:Config, local: LocalStorage, sha256: str):
+    def download_to_local(self, config:Config, local: LocalStorage, sha256: str, **kwargs):
         try:
             transfer = boto3.s3.transfer.S3Transfer(self.client)
 
