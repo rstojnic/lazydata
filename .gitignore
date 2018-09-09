@@ -5,3 +5,5 @@
 .pytest_cache
 tests/projects
 htmlcov
+*.pyc
+__pycache__/

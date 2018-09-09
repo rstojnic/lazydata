@@ -122,7 +122,7 @@ class Config:
 
         self.save_config()
 
-    def add_remote(self, remote_url:str):
+    def add_remote(self, remote_url:str, endpoint_url:str):
         """
         Add a remote to the config file
 
@@ -133,7 +133,9 @@ class Config:
         if "remote" in self.config:
             print("ERROR: Remote storage backend in `lazydata.yml` already exists. Aborting...")
         else:
+            # Setting the remote config automatically sets the endpoint parameter, even if it is None
             self.config["remote"] = remote_url
+            self.config["endpoint"] = endpoint_url
             self.save_config()
 
     def check_file_tracked(self, path:str):
@@ -181,6 +183,8 @@ class Config:
             yaml.dump({"version": self.config["version"]}, fp, default_flow_style=False)
             if "remote" in self.config:
                 yaml.dump({"remote": self.config["remote"]}, fp, default_flow_style=False)
+            if "endpoint" in self.config:
+                yaml.dump({"endpoint": self.config["endpoint"]}, fp, default_flow_style=False)
             if "files" in self.config:
                 yaml.dump({"files": self.config["files"]}, fp, default_flow_style=False)
 
