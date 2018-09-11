@@ -15,6 +15,8 @@ boto3 = lazy_import.lazy_module("boto3")
 botocore = lazy_import.lazy_module("botocore")
 from urllib.parse import urlparse
 
+gcp_storage = lazy_import.lazy_module('google.cloud.storage')
+
 import logging
 logging.getLogger('boto3').setLevel(logging.CRITICAL)
 logging.getLogger('botocore').setLevel(logging.CRITICAL)
@@ -187,3 +189,54 @@ class S3ProgressPercentage:
                     self._real_filename, self._seen_so_far, self._size,
                     percentage))
             sys.stdout.flush()
+
+
+class GCPRemoteStorage(RemoteStorage):
+
+    def __init__(self, remote_url):
+        if not remote_url.startswith('gs://'):
+            raise RuntimeError("GCPRemoteStorage URL needs to start with gs://")
+
+        self.url = remote_url
+        p = urlparse(self.url)
+        self.bucket_name = p.netloc
+        self.path_prefix = p.path.strip()
+        if self.path_prefix.startswith("/"):
+            self.path_prefix = self.path_prefix[1:]
+
+        self.bucket = gcp_storage.Client().bucket(self.bucket_name)
+
+    def download_to_local(self, config: Config, local: LocalStorage, sha256: str):
+
+        local_path = local.hash_to_file(sha256)
+        remote_path = local.hash_to_remote_path(sha256)
+
+        # ensure local path exists
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+
+        real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+        if len(real_path) > 0:
+            real_path = real_path[-1]
+        else:
+            # file no longer in config? this shouldn't happen but don't fail.
+            real_path = ""
+
+        print("Downloading {}".format(real_path))
+
+        gcp_path = str(PurePosixPath(self.path_prefix, remote_path))
+        blob = self.bucket.blob(gcp_path)
+        blob.download_to_filename(str(local_path))
+
+    def upload(self, local: LocalStorage, config: Config):
+        for datafile in config.config['files']:
+            sha256 = datafile['hash']
+
+            local_path = str(local.hash_to_file(sha256))
+            remote_path = local.hash_to_remote_path(sha256)
+
+            gcp_path = str(PurePosixPath(self.path_prefix, remote_path))
+            blob = self.bucket.blob(gcp_path)
+            blob.upload_from_filename(local_path)
+
+    def check_storage_exists(self):
+        return self.bucket.exists()
