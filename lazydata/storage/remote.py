@@ -30,6 +30,8 @@ class RemoteStorage:
     def get_from_url(remote_url:str, endpoint_url:str):
         if remote_url.startswith("s3://"):
             return AWSRemoteStorage(remote_url, endpoint_url=endpoint_url)
+        elif remote_url.startswith('gs://'):
+            return GCPRemoteStorage(remote_url)
         else:
             raise RuntimeError("Url `%s` is not supported as a remote storage backend" % remote_url)
 
