@@ -3,7 +3,7 @@ Remote storage backend implementation
 
 """
 import lazy_import
-from pathlib import PurePosixPath
+from pathlib import Path,PurePosixPath
 
 import os, threading, sys
 
@@ -19,17 +19,28 @@ import logging
 logging.getLogger('boto3').setLevel(logging.CRITICAL)
 logging.getLogger('botocore').setLevel(logging.CRITICAL)
 
+from shutil import copyfile
+from tqdm import tqdm
+import ntpath
+
 class RemoteStorage:
     """
     A storage backend abstraction layer
     """
 
     @staticmethod
-    def get_from_url(remote_url:str, endpoint_url:str):
+    def get_from_url(remote_url:str, endpoint_url=''):
         if remote_url.startswith("s3://"):
             return AWSRemoteStorage(remote_url, endpoint_url=endpoint_url)
+        elif os.name != 'nt' and remote_url.startswith('/'):
+            return LocalDriveStorage(remote_url)
+        elif os.name == 'nt' and remote_url[1] == ':':
+            return LocalDriveStorage(remote_url)
         else:
-            raise RuntimeError("Url `%s` is not supported as a remote storage backend" % remote_url)
+            raise RuntimeError("""Url `%s` is not supported as a remote storage backend.
+                                Please use 's3://...' for aws,
+                                or 'C:/...' for a local folder on windows,
+                                or '/...' for a local folder on linux.""" % remote_url)
 
     @staticmethod
     def get_from_config(config:Config):
@@ -168,6 +179,77 @@ class AWSRemoteStorage(RemoteStorage):
                 raise RuntimeError("Hash for the downloaded file `%s` is incorrect. File might be corrupted in the remote storage backend." % str(local_path))
         except botocore.exceptions.NoCredentialsError:
             raise RuntimeError("Download failed. AWS credentials not found. Run `lazydata config aws` to configure them.")
+
+
+class LocalDriveStorage(RemoteStorage):
+    '''ideally used for mounted network drives to local folders'''
+
+    def __init__(self, remote_url):
+        self.url = remote_url
+        p = urlparse(self.url)
+
+    def check_storage_exists(self):
+        if os.path.exists(self.url):
+            return True
+        return False
+
+
+    def upload(self, local: LocalStorage, config: Config):
+        def check_file_exists(url):
+            if os.path.exists(url):
+                return True
+            return False
+
+        # look for all hashes in the config file and upload
+        all_sha256 = [e["hash"] for e in config.config["files"]]
+        remote_path = config.config['remote']
+
+        for sha256 in tqdm(all_sha256):
+            local_path = local.hash_to_file(sha256)
+
+            # get the filename the user would recognise
+            real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+            if len(real_path) > 0:
+                real_path = real_path[-1]
+            else:
+                # file no longer in config? this shouldn't happen but don't fail.
+                real_path = ""
+
+            # check if the remote location already exists
+            if check_file_exists(str(remote_path)):
+                print('copying from',Path(Path.home(),".lazydata",str(local_path)), 'to',str(remote_path))
+                copyfile(
+                    Path(Path.home(),".lazydata",str(local_path))       ,
+                    Path(str(remote_path),ntpath.basename(real_path))   )
+            else:
+                print('Error: destination folder missing.')
+
+
+        # Final newline to flush the progress indicator
+        print()
+
+
+    def download_to_local(self, config:Config, local: LocalStorage, sha256: str):
+        local_path = local.hash_to_file(sha256)
+        remote_path = local.hash_to_remote_path(sha256)
+
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+
+        real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+        if len(real_path) > 0:
+            real_path = real_path[-1]
+        else:
+            # file no longer in config? this shouldn't happen but don't fail.
+            real_path = ""
+
+        print("Copying `%s`" % real_path)
+
+        copyfile(str(remote_path), str(local_path))
+
+        # make sure the sha256 of the just downloaded file is correct
+        downloaded_sha256 = calculate_file_sha256(str(local_path))
+        if sha256 != downloaded_sha256:
+            raise RuntimeError("Hash for the downloaded file `%s` is incorrect. File might be corrupted in the remote storage backend." % str(local_path))
 
 
 class S3ProgressPercentage:

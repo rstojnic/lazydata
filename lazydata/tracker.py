@@ -7,8 +7,7 @@ from lazydata.storage.hash import calculate_file_sha256
 from lazydata.storage.local import LocalStorage
 from lazydata.storage.remote import RemoteStorage
 
-
-def track(path:str) -> str:
+def track(path:str):
     """
     Track a file using lazydata.
 
@@ -71,7 +70,6 @@ def track(path:str) -> str:
 
             if latest["hash"] != path_sha256:
                 print("LAZYDATA: Tracked file `%s` changed, recording a new version..." % path)
-                local.store_file(path)
                 config.add_file_entry(path, script_location)
                 # make sure usage is recorded
                 config.add_usage(latest, script_location)

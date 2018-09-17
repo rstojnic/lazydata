@@ -13,7 +13,7 @@ from peewee import SqliteDatabase, Model, CharField, IntegerField
 from lazydata.storage.hash import calculate_file_sha256
 import shutil
 
-BASE_PATH = Path(Path.home().resolve(), ".lazydata")
+BASE_PATH = Path(Path.home(), ".lazydata")
 METADB_PATH = Path(BASE_PATH, "metadb.sqlite3")
 
 db = SqliteDatabase(str(METADB_PATH))
@@ -63,7 +63,7 @@ class LocalStorage:
         elif self.metadb.is_closed():
             self.metadb.connect()
 
-    def hash_to_file(self, sha256:str) -> Path:
+    def hash_to_file(self, sha256:str):
         """Get the data storage path to a file with this hash
 
         :param sha256:
@@ -72,7 +72,7 @@ class LocalStorage:
 
         return Path(self.data_path, sha256[:2], sha256[2:])
 
-    def hash_to_remote_path(self, sha256:str) -> PurePosixPath:
+    def hash_to_remote_path(self, sha256:str):
         """Get the remote path (in posix format)
 
         :param sha256:
@@ -89,10 +89,12 @@ class LocalStorage:
         :return:
         """
 
+        print(path)
         stat = os.stat(path)
         abspath = Path(path).resolve()
 
         sha256 = calculate_file_sha256(path)
+        print(path, sha256)
 
         # see if we stored this file already
         datapath = self.hash_to_file(sha256)
@@ -115,7 +117,7 @@ class LocalStorage:
         if existing_entries.count() == 0:
             DataFile.create(abspath=abspath, sha256=sha256, mtime=stat.st_mtime, size=stat.st_size)
 
-    def get_file_sha256(self, path:str) -> list:
+    def get_file_sha256(self, path:str):
         """
         Checks if the file has a stored sha256 value
 
@@ -137,7 +139,7 @@ class LocalStorage:
         sha256 = [e.sha256 for e in existing_entries]
         return sha256
 
-    def copy_file_to(self, sha256:str, path:str) -> bool:
+    def copy_file_to(self, sha256:str, path:str):
         """
         Copy the file from local cache to user's local copy.
 
@@ -194,6 +196,3 @@ class DataFile(BaseModel):
     sha256 = CharField(max_length=70, index=True)
     mtime = IntegerField(index=True)
     size = IntegerField(index=True)
-
-
-

@@ -122,7 +122,7 @@ class Config:
 
         self.save_config()
 
-    def add_remote(self, remote_url:str, endpoint_url:str):
+    def add_remote(self, remote_url:str, endpoint_url=''):
         """
         Add a remote to the config file
 
