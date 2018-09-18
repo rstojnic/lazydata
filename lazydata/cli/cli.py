@@ -39,11 +39,6 @@ def cli():
             "help": "Add a remote storage backend"
         },
         {
-            "command": "add",
-            "handler": AddRemoteCommand(),
-            "help": "Add a remote storage backend"
-        },
-        {
             "command": "config",
             "handler": ConfigCommand(),
             "help": "Configure access credentials for remote storage backends"
