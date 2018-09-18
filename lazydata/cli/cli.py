@@ -6,6 +6,7 @@ from lazydata.cli.commands.push import PushCommand
 from lazydata.cli.commands.addremote import AddRemoteCommand
 from lazydata.cli.commands.config import ConfigCommand
 from lazydata.cli.commands.purge import PurgeCommand
+from lazydata.cli.commands.track import TrackCommand
 
 def cli():
     """
@@ -48,6 +49,11 @@ def cli():
             "handler": PurgeCommand(),
             "help": "Deletes all config files related to lazydata globally"
         },
+        {
+            "command": "track",
+            "handler": TrackCommand(),
+            "help": "Tracks a specified file on command"
+        }
         # {
         #     "command": "remove-remote",
         #     "handler": RemoveRemoteCommand(),
