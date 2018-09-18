@@ -209,18 +209,30 @@ class LocalDriveStorage(RemoteStorage):
 
             # get the filename the user would recognise
             real_path = [e["path"] for e in config.config["files"] if e["hash"] == sha256]
+            print(real_path)
+
             if len(real_path) > 0:
                 real_path = real_path[-1]
             else:
                 # file no longer in config? this shouldn't happen but don't fail.
                 real_path = ""
 
+            folders = []
+            real_file = ntpath.basename(real_path)
+            real_path = ntpath.dirname(real_path)
+            for folder in real_path.split('/'):
+                folders.append(folder)
+                target = Path(str(remote_path), '/'.join(folders))
+                if not os.path.exists(target):
+                    print('making ',target)
+                    os.mkdir(target)
+
             # check if the remote location already exists
             if check_file_exists(str(remote_path)):
-                print('copying from',Path(Path.home(),".lazydata",str(local_path)), 'to',str(remote_path))
+                print('copying from',Path(Path.home(),".lazydata",str(local_path)), 'to',Path(str(remote_path),real_path,real_file))
                 copyfile(
-                    Path(Path.home(),".lazydata",str(local_path))       ,
-                    Path(str(remote_path),ntpath.basename(real_path))   )
+                    Path(Path.home(),".lazydata",str(local_path)),
+                    Path(str(remote_path),real_path,real_file)  )
             else:
                 print('Error: destination folder missing.')
 
