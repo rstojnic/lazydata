@@ -20,5 +20,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=['pyyaml', "peewee", "boto3", "lazy-import"],
-    scripts=['lazydata/bin/lazydata']
+    scripts=['lazydata/bin/lazydata'],
+    entry_points={
+        "console_scripts": [
+            "lazydata = lazydata.cli.cli:cli",
+        ]
+    },
 )
