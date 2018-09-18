@@ -2,3 +2,5 @@ pyyaml>=3.13
 peewee>=3.6.4
 boto3>=1.8.6
 lazy-import>=0.2.2
+google-api-python-client>=1.7.4
+google-cloud-storage>=1.12.0
