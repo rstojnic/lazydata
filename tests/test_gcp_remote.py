@@ -12,6 +12,20 @@ from google.cloud import storage
 LAZYDATA_TEST_GCP_VAR_NAME = 'lazydata_gcp_test_url'
 
 
+def init_lazydata():
+    """
+    Setup the sample repo to have a lazydata.yml file.
+    """
+    # create a lazydata.yml file.
+    InitCommand().handle(None)
+
+    datafile_path = str(Path(Path(__file__).parent, 'templates', 'sample-project', 'data', 'some_data_file.txt'))
+
+    # start tracking.
+    with open(track(datafile_path)) as f:
+        print(f.read())
+
+
 class TestGCPRemoteStorage(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
@@ -20,12 +34,7 @@ class TestGCPRemoteStorage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # create a lazydata.yml file.
-        InitCommand().handle(None)
-
-        # start tracking.
-        with open(track('templates/sample-project/data/some_data_file.txt')) as f:
-            print(f.read())
+        init_lazydata()
 
     @classmethod
     def tearDownClass(cls):

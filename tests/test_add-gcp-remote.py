@@ -7,21 +7,14 @@ from lazydata.cli.commands import addremote, init
 from lazydata.config.config import Config
 from lazydata import track
 
-from tests.test_gcp_remote import LAZYDATA_TEST_GCP_VAR_NAME
+from tests.test_gcp_remote import LAZYDATA_TEST_GCP_VAR_NAME, init_lazydata
 
 
 class TestAddRemoteGCP(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # create a lazydata.yml file.
-        init.InitCommand().handle(None)
-
-        datafile_path = str(Path(Path(__file__).parent, 'templates', 'sample-project', 'data', 'some_data_file.txt'))
-
-        # start tracking.
-        with open(track(datafile_path)) as f:
-            print(f.read())
+        init_lazydata()
 
     @classmethod
     def tearDownClass(cls):
