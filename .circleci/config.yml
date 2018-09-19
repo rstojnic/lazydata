@@ -48,9 +48,16 @@ jobs:
             pip install -e .
 
       - run:
+          name: Setup GCP Service Account
+          command: echo $GCP_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcp-service-key.json
+
+      - run:
           name: Run tests
           command: |
             . venv/bin/activate
+            export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcp-service-key.json
+            export GOOGLE_CLOUD_PROJECT=$GCP_PROJECT_NAME
+            export lazydata_gcp_test_url=$LAZYDATA_BUCKET_URL
             py.test --cov=lazydata --cov-report html --cov-report term
 
       - store_artifacts:
