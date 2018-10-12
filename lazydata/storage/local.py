@@ -100,7 +100,8 @@ class LocalStorage:
         # copy over the the cache,
         # TODO: option to hardlink
         datapath.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(str(abspath), str(datapath))
+        if not datapath.exists():
+            shutil.copyfile(str(abspath), str(datapath))
 
         # Store in the metadata DB if doesn't exist already
         existing_entries = DataFile.select().where(

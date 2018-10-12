@@ -5,6 +5,7 @@ from lazydata.cli.commands.pull import PullCommand
 from lazydata.cli.commands.push import PushCommand
 from lazydata.cli.commands.ls import LsCommand
 from lazydata.cli.commands.addremote import AddRemoteCommand
+from lazydata.cli.commands.addsource import AddSourceCommand
 from lazydata.cli.commands.removeremote import RemoveRemoteCommand
 from lazydata.cli.commands.config import ConfigCommand
 
@@ -33,6 +34,11 @@ def cli():
             "command": "pull",
             "handler": PullCommand(),
             "help": "Pull files from remote storage"
+        },
+        {
+            "command": "add-source",
+            "handler": AddSourceCommand(),
+            "help": "Add a source url for the file"
         },
         {
             "command": "add-remote",

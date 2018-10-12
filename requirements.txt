@@ -1,3 +1,4 @@
+pySmartDL>=1.2.5
 pyyaml>=3.13
 peewee>=3.6.4
 boto3>=1.8.6

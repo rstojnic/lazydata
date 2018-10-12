@@ -7,3 +7,5 @@ tests/projects
 htmlcov
 *.pyc
 __pycache__/
+.python-version
+.idea/
