@@ -7,7 +7,6 @@ from lazydata.storage.fetch_file import fetch_file
 from lazydata.storage.hash import calculate_file_sha256
 from lazydata.storage.local import LocalStorage
 
-
 def track(path: str, source_url: Optional[str] = None) -> str:
     """
     Track a file using lazydata.
