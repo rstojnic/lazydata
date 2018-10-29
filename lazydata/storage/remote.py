@@ -254,6 +254,7 @@ class LocalDriveStorage(RemoteStorage):
         all_sha256 = [e["hash"] for e in config.config["files"]]
         remote_path = config.config['remote']
 
+        for sha256 in tqdm(all_sha256):
             local_path = local.hash_to_file(sha256)
 
             # get the filename the user would recognise
