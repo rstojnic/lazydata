@@ -6,21 +6,29 @@ from lazydata.storage.cloudsetup import setup_aws_credentials
 from lazydata.storage.remote import RemoteStorage
 
 import lazy_import
+
 botocore = lazy_import.lazy_module("botocore")
 
-class AddRemoteCommand(BaseCommand):
 
+class AddRemoteCommand(BaseCommand):
     def add_arguments(self, parser):
-        parser.add_argument('url', type=str, help='URL of the remote storage backend')
-        parser.add_argument('--endpoint-url', type=str, nargs='?', help='The complete URL to use for the constructed client')
+        parser.add_argument("url", type=str, help="URL of the remote storage backend")
+        parser.add_argument(
+            "--endpoint-url",
+            type=str,
+            nargs="?",
+            help="The complete URL to use for the constructed client",
+        )
         return parser
 
     def handle(self, args):
         url = args.url
         endpoint_url = args.endpoint_url
 
-        if not url.startswith("s3://"):
-            print("ERROR: Only S3 URLs are currently supported. For example: `s3://mybucket` or `s3://mybucket/myfolder`")
+        if not url.startswith(("s3://", "az://")):
+            print(
+                "ERROR: Only S3 URLs are currently supported. For example: `s3://mybucket` or `s3://mybucket/myfolder`"
+            )
             sys.exit(1)
 
         success = False
@@ -33,17 +41,25 @@ class AddRemoteCommand(BaseCommand):
                     success = True
                 else:
                     success = True
-                    print("ERROR: The remote storage location you specified does not exist or is not accessible to you")
+                    print(
+                        "ERROR: The remote storage location you specified does not exist or is not accessible to you"
+                    )
             except botocore.exceptions.NoCredentialsError:
                 success = False
+            # Azure does not throw a credentials error. There does not seem
+            # to be a way to differentiate exists vs credentials with Azure.
 
             if not success:
                 print("ERROR: No valid AWS credentials found.")
                 config_now = input("Do you want to configure AWS credentials now? [y/n] ")
                 if config_now.strip() == "y":
                     setup_aws_credentials()
-                    print("Credentials successfully stored. Trying again with these new credentials...")
+                    print(
+                        "Credentials successfully stored. Trying again with these new credentials..."
+                    )
                 else:
                     success = True
-                    print("Alright, will not configure credentials now. Re-run this command to try again, "
-                          "or configure using the AWS CLI: `aws configure`.")
+                    print(
+                        "Alright, will not configure credentials now. Re-run this command to try again, "
+                        "or configure using the AWS CLI: `aws configure`."
+                    )
